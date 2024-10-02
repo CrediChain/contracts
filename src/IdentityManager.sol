@@ -43,15 +43,9 @@ contract IdentityManager {
     /// @param _worldId The WorldID router that will verify the proofs
     /// @param _appId The World ID app ID
     /// @param _actionId The World ID action ID
-    constructor(
-        address _worldId,
-        string memory _appId,
-        string memory _actionId
-    ) {
+    constructor(address _worldId, string memory _appId, string memory _actionId) {
         worldId = IWorldID(_worldId);
-        externalNullifier = abi
-            .encodePacked(abi.encodePacked(_appId).hashToField(), _actionId)
-            .hashToField();
+        externalNullifier = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _actionId).hashToField();
     }
 
     /// @param signal An arbitrary input from the user, usually the user's wallet address (check README for further
@@ -61,12 +55,7 @@ contract IdentityManager {
     /// @param proof The zero-knowledge proof that demonstrates the claimer is registered with World ID (returned by the
     /// JS widget).
     /// @dev Feel free to rename this method however you want! We've used `claim`, `verify` or `execute` in the past.
-    function verifyAndExecute(
-        address signal,
-        uint256 root,
-        uint256 nullifierHash,
-        uint256[8] calldata proof
-    ) public {
+    function verifyAndExecute(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
         // First, we make sure this person hasn't done this before
         if (nullifierHashes[nullifierHash]) {
             revert DuplicateNullifier(nullifierHash);
@@ -74,12 +63,7 @@ contract IdentityManager {
 
         // We now verify the provided proof is valid and the user is verified by World ID
         worldId.verifyProof(
-            root,
-            groupId,
-            abi.encodePacked(signal).hashToField(),
-            nullifierHash,
-            externalNullifier,
-            proof
+            root, groupId, abi.encodePacked(signal).hashToField(), nullifierHash, externalNullifier, proof
         );
 
         // We now record the user has done this, so they can't do it again (proof of uniqueness)
