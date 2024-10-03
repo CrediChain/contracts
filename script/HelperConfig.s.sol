@@ -28,11 +28,7 @@ contract HelperConfig is Script {
     function getAnvilConfig() public returns (Config memory) {
         console.log("testing on anvil");
         // WorldIDIdentityManagerRouterMock routerMock = new WorldIDIdentityManagerRouterMock();
-        Config memory AnvilConfig = Config({
-            _appid: appId,
-            _actionId: actionId,
-            _WorldcoinRouterAddress: address(0)
-        });
+        Config memory AnvilConfig = Config({_appid: appId, _actionId: actionId, _WorldcoinRouterAddress: address(0)});
         return AnvilConfig;
     }
 }

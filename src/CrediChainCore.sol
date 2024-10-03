@@ -23,21 +23,14 @@ contract CrediChainCore is Ownable {
 
     event InstitutionVerified(address indexed institution);
     event InstitutionRemoved(address indexed institution);
-    event CredentialIssued(
-        address indexed to,
-        uint256 indexed tokenId,
-        address indexed issuer
-    );
+    event CredentialIssued(address indexed to, uint256 indexed tokenId, address indexed issuer);
 
     /**
      * @notice Initializes the CrediChainCore contract with the SoulBoundNFT and IdentityManager addresses.
      * @param _soulBoundNFT The address of the SoulBoundNFT contract.
      * @param _identityManager The address of the IdentityManager contract.
      */
-    constructor(
-        address _soulBoundNFT,
-        address _identityManager
-    ) Ownable(msg.sender) {
+    constructor(address _soulBoundNFT, address _identityManager) Ownable(msg.sender) {
         soulBoundNFT = SoulBoundNFT(_soulBoundNFT);
         identityManager = IdentityManager(_identityManager);
         verifiedInstitutions[msg.sender] = true;
@@ -47,8 +40,9 @@ contract CrediChainCore is Ownable {
      * @notice Modifier to ensure that the caller is a verified institution.
      */
     modifier onlyVerifiedInstitution() {
-        if (!verifiedInstitutions[msg.sender])
+        if (!verifiedInstitutions[msg.sender]) {
             revert CrediChainCore__OnlyVerifiedInstitutions();
+        }
         _;
     }
 
@@ -57,8 +51,9 @@ contract CrediChainCore is Ownable {
      * @param user The address of the user to check for verification.
      */
     modifier onlyVerifiedUser(address user) {
-        if (!identityManager.getIsVerified(user))
+        if (!identityManager.getIsVerified(user)) {
             revert CrediChainCore__OnlyVerifiedUsers();
+        }
         _;
     }
 
@@ -88,10 +83,7 @@ contract CrediChainCore is Ownable {
      * @param to The address of the user to receive the credential.
      * @param uri The URI that points to the metadata of the credential.
      */
-    function issueCredential(
-        address to,
-        string memory uri
-    ) public onlyVerifiedInstitution onlyVerifiedUser(to) {
+    function issueCredential(address to, string memory uri) public onlyVerifiedInstitution onlyVerifiedUser(to) {
         uint256 tokenId = soulBoundNFT.safeMint(to, uri);
         credentialIssuers[tokenId] = msg.sender;
         emit CredentialIssued(to, tokenId, msg.sender);
@@ -115,17 +107,11 @@ contract CrediChainCore is Ownable {
      * @param tokenId The ID of the credential.
      * @return issuer The address of the institution that issued the credential.
      */
-    function getCredentialIssuer(
-        uint256 tokenId
-    ) public view returns (address) {
+    function getCredentialIssuer(uint256 tokenId) public view returns (address) {
         return credentialIssuers[tokenId];
     }
 
-    function getStudentCredentials()
-        public
-        view
-        returns (SoulBoundNFT.NFTData[] memory)
-    {
+    function getStudentCredentials() public view returns (SoulBoundNFT.NFTData[] memory) {
         return soulBoundNFT.getTokensByAddress(msg.sender);
     }
 }

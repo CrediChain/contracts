@@ -30,9 +30,7 @@ contract SoulBoundNFTTest is Test {
         soulBoundNFT.safeMint(user, "second");
         soulBoundNFT.safeMint(user, "third");
         vm.stopPrank();
-        SoulBoundNFT.NFTData[] memory nft = soulBoundNFT.getTokensByAddress(
-            user
-        );
+        SoulBoundNFT.NFTData[] memory nft = soulBoundNFT.getTokensByAddress(user);
         for (uint256 i = 0; i < nft.length; i++) {
             console.log(nft[i].tokenURI);
             console.log(nft[i].ownerAddress);
