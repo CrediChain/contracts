@@ -40,6 +40,7 @@ contract CrediChainCore is Ownable {
     ) Ownable(msg.sender) {
         soulBoundNFT = SoulBoundNFT(_soulBoundNFT);
         identityManager = IdentityManager(_identityManager);
+        verifiedInstitutions[msg.sender] = true;
     }
 
     /**
