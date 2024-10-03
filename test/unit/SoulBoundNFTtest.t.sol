@@ -17,4 +17,16 @@ contract NFTTest is Test {
         console.log(soulBoundNFT.tokenURI(tokenId));
         console.log(soulBoundNFT.tokenURI(tokenId));
     }
+
+    function testGetTokenFromAddress() public {
+        soulBoundNFT.safeMint(user, "univ_cred");
+        soulBoundNFT.safeMint(user, "sexyone");
+        SoulBoundNFT.NFTData[] memory nft = soulBoundNFT.getTokensByAddress(
+            user
+        );
+        for (uint256 i = 0; i < nft.length; i++) {
+            console.log(nft[i].tokenURI);
+            console.log(nft[i].ownerAddress);
+        }
+    }
 }
