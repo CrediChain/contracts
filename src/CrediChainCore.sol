@@ -44,10 +44,13 @@ contract CrediChainCore is Ownable {
     }
 
     /**
-     * @notice Modifier to ensure that the caller is a verified institution.
+     * @notice Modifier to ensure that the caller is a verified institution and verified with world id.
      */
     modifier onlyVerifiedInstitution() {
-        if (!verifiedInstitutions[msg.sender]) {
+        if (
+            !verifiedInstitutions[msg.sender] &&
+            !identityManager.getIsVerified(msg.sender)
+        ) {
             revert CrediChainCore__OnlyVerifiedInstitutions();
         }
         _;
@@ -93,10 +96,16 @@ contract CrediChainCore is Ownable {
     function issueCredential(
         address to,
         string memory uri
-    ) public onlyVerifiedInstitution onlyVerifiedUser(to) {
-        uint256 tokenId = soulBoundNFT.safeMint(to, uri);
+    )
+        public
+        onlyVerifiedInstitution
+        onlyVerifiedUser(to)
+        returns (uint256 tokenId)
+    {
+        tokenId = soulBoundNFT.safeMint(msg.sender, to, uri);
         credentialIssuers[tokenId] = msg.sender;
         emit CredentialIssued(to, tokenId, msg.sender);
+        return tokenId;
     }
 
     /**
@@ -104,11 +113,11 @@ contract CrediChainCore is Ownable {
      * @dev Only the institution that issued the credential can revoke it.
      * @param tokenId The ID of the credential to revoke.
      */
-    function revokeCredential(uint256 tokenId) public {
+    function revokeCredential(uint256 tokenId) public onlyVerifiedInstitution {
         if (credentialIssuers[tokenId] != msg.sender) {
             revert OnlyTheIssuerCanRevoke();
         }
-        soulBoundNFT.revoke(tokenId);
+        soulBoundNFT.revoke(msg.sender, tokenId);
         delete credentialIssuers[tokenId];
     }
 
@@ -121,6 +130,12 @@ contract CrediChainCore is Ownable {
         uint256 tokenId
     ) public view returns (address) {
         return credentialIssuers[tokenId];
+    }
+
+    function getIsInstitutuinVerified(
+        address institution
+    ) public view returns (bool) {
+        return verifiedInstitutions[institution];
     }
 
     /**

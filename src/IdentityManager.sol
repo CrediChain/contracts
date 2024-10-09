@@ -71,7 +71,6 @@ contract IdentityManager {
         if (nullifierHashes[nullifierHash]) {
             revert DuplicateNullifier(nullifierHash);
         }
-
         // We now verify the provided proof is valid and the user is verified by World ID
         worldId.verifyProof(
             root,
@@ -81,15 +80,11 @@ contract IdentityManager {
             externalNullifier,
             proof
         );
-
         // We now record the user has done this, so they can't do it again (proof of uniqueness)
         nullifierHashes[nullifierHash] = true;
-
-        // Finally, execute your logic here, for example issue a token, NFT, etc...
-        // Make sure to emit some kind of event afterwards!
-
-        emit Verified(nullifierHash);
+        // Execution logic
         userMapping[msg.sender] = true;
+        emit Verified(nullifierHash);
     }
 
     /**
