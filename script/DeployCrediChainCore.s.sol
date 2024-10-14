@@ -7,6 +7,6 @@ import {HelperConfig} from "./HelperConfig.s.sol";
 
 contract DeployCrediChainCore is Script {
     function run() external returns (CrediChainCore) {
-        HelperConfig herlpConfig = new HelperConfig();
+        HelperConfig helperConfig = new HelperConfig();
     }
 }

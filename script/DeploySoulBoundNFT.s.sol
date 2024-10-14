@@ -6,7 +6,7 @@ import {SoulBoundNFT} from "../src/SoulBoundNFT.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 
 contract DeploySoulBoundNFT is Script {
-    function run() external returns (DeploySoulBoundNFT) {
-        HelperConfig herlpConfig = new HelperConfig();
+    function run() external returns (SoulBoundNFT) {
+        HelperConfig helperConfig = new HelperConfig();
     }
 }

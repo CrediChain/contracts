@@ -7,8 +7,8 @@ import {console} from "forge-std/Test.sol";
 // import {WorldIDIdentityManagerRouterMock} from "../test/Anvil/Unit/mocks/WorldIDIdentityManagerRouterMock.sol";
 
 contract HelperConfig is Script {
-    string appId = "app_staging_6c8d4488699bc14d8d580282ac02b9d5";
-    string actionId = "testing-verfication-action";
+    string appId = "app_staging_9e74e697f8ab2acdd8192776b90c6902";
+    string actionId = "verify-entity";
 
     struct Config {
         string _appid;
