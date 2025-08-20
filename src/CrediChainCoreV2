@@ -13,4 +13,9 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
  * with improved security, batch operations, reputation system, and multi-role access control.
  * @notice This contract allows verified institutions to issue credentials to verified users with enhanced features.
  */
-contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {}
+contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
+    // Role definitions
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant INSTITUTION_VERIFIER_ROLE = keccak256("INSTITUTION_VERIFIER_ROLE");
+    bytes32 public constant EMERGENCY_ROLE = keccak256("EMERGENCY_ROLE");
+}
