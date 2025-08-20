@@ -1,4 +1,10 @@
-// SPDX-Licence-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
+
+import "./SoulBoundNFT.sol";
+import "./IdentityManager.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract CrediChainCoreV2 {}
