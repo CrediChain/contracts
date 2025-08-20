@@ -16,5 +16,6 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     // Role definitions
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    
+    bytes32 public constant INSTITUTION_VERIFIER_ROLE = keccak256("INSTITUTION_VERIFIER_ROLE");
+
 }
