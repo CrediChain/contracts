@@ -26,5 +26,6 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     error CrediChainCore__InstitutionNotFound();
     error CrediChainCore__InvalidCredentialType();
     error CrediChainCore__CredentialExpired();
+    error CrediChainCore__InsufficientReputation();
 
 }
