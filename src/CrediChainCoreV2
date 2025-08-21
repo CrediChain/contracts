@@ -18,4 +18,16 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant INSTITUTION_VERIFIER_ROLE = keccak256("INSTITUTION_VERIFIER_ROLE");
     bytes32 public constant EMERGENCY_ROLE = keccak256("EMERGENCY_ROLE");
+
+    error OnlyTheIssuerCanRevoke();
+    error CrediChainCore__OnlyVerifiedInstitutions();
+    error CrediChainCore__OnlyVerifiedUsers();
+    error CrediChainCore__InstitutionAlreadyVerified();
+    error CrediChainCore__InstitutionNotFound();
+    error CrediChainCore__InvalidCredentialType();
+    error CrediChainCore__CredentialExpired();
+    error CrediChainCore__InsufficientReputation();
+    error CrediChainCore__BatchSizeLimitExceeded();
+    error CrediChainCore__InvalidInput();
+
 }
