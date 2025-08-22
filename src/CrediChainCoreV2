@@ -30,6 +30,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     error CrediChainCore__BatchSizeLimitExceeded();
     error CrediChainCore__InvalidInput();
 
+   // Structs
     struct Institution {
         bool isVerified;
         uint256 reputation;
