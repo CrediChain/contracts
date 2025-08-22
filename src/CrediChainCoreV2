@@ -40,4 +40,13 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         string website;
         InstitutionCategory category;
     }
+
+    struct CredentialMetadata {
+        address issuer;
+        uint256 issuanceTimestamp;
+        uint256 expirationTimestamp;
+        CredentialType credentialType;
+        bool isActive;
+        string ipfsHash;
+    }
 }
