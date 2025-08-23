@@ -50,4 +50,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         bool isActive;
         string ipfsHash;
     }
+
+    enum InstitutionCategory { UNIVERSITY, COLLEGE, CERTIFICATION_BODY, GOVERNMENT, OTHER }
+
 }
