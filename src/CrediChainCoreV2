@@ -56,5 +56,6 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     enum CredentialType { DEGREE, CERTIFICATE, DIPLOMA, LICENSE, BADGE }
 
     SoulBoundNFT public immutable soulBoundNFT;
+    IdentityManager public immutable identityManager;
 
 }
