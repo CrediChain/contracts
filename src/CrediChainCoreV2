@@ -52,5 +52,6 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     }
 
     enum InstitutionCategory { UNIVERSITY, COLLEGE, CERTIFICATION_BODY, GOVERNMENT, OTHER }
+    enum CredentialType { DEGREE, CERTIFICATE, DIPLOMA, LICENSE, BADGE }
 
 }
