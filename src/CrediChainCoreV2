@@ -59,4 +59,6 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     SoulBoundNFT public immutable soulBoundNFT;
     IdentityManager public immutable identityManager;
 
+    mapping(address => Institution) public institutions;
+
 }
