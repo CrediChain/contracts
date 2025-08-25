@@ -80,4 +80,55 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         InstitutionCategory category,
         uint256 timestamp
     );
+    event InstitutionRemoved(address indexed institution, uint256 timestamp);
+    event InstitutionReputationUpdated(address indexed institution, uint256 newReputation);
+    event CredentialIssued(
+        address indexed to,
+        uint256 indexed tokenId,
+        address indexed issuer,
+        CredentialType credentialType,
+        uint256 expirationTimestamp
+    );
+    event CredentialRevoked(
+        uint256 indexed tokenId,
+        address indexed issuer,
+        address indexed holder,
+        string reason
+    );
+    event BatchCredentialsIssued(
+        address indexed issuer,
+        uint256 count,
+        uint256[] tokenIds
+    );
+
+    /**
+     * @notice Initializes the CrediChainCore V2 contract
+     * @param _soulBoundNFT The address of the SoulBoundNFT contract
+     * @param _identityManager The address of the IdentityManager contract
+     */
+    constructor(
+        address _soulBoundNFT,
+        address _identityManager
+    ) {
+        if (_soulBoundNFT == address(0) || _identityManager == address(0)) {
+            revert CrediChainCore__InvalidInput();
+        }
+        
+        soulBoundNFT = SoulBoundNFT(_soulBoundNFT);
+        identityManager = IdentityManager(_identityManager);
+        
+        // Set up roles
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+        _grantRole(INSTITUTION_VERIFIER_ROLE, msg.sender);
+        _grantRole(EMERGENCY_ROLE, msg.sender);
+        
+        // Verify the deployer as the first institution
+        _verifyInstitution(
+            msg.sender,
+            "Credichain Platform",
+            "https://credichain.org",
+            InstitutionCategory.OTHER
+        );
+    }
 }
