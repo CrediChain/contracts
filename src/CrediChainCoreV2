@@ -95,4 +95,9 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         address indexed holder,
         string reason
     );
+    event BatchCredentialsIssued(
+        address indexed issuer,
+        uint256 count,
+        uint256[] tokenIds
+    );
 }
