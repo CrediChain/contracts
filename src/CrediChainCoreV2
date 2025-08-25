@@ -100,4 +100,30 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         uint256 count,
         uint256[] tokenIds
     );
+
+    constructor(
+        address _soulBoundNFT,
+        address _identityManager
+    ) {
+        if (_soulBoundNFT == address(0) || _identityManager == address(0)) {
+            revert CrediChainCore__InvalidInput();
+        }
+        
+        soulBoundNFT = SoulBoundNFT(_soulBoundNFT);
+        identityManager = IdentityManager(_identityManager);
+        
+        // Set up roles
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+        _grantRole(INSTITUTION_VERIFIER_ROLE, msg.sender);
+        _grantRole(EMERGENCY_ROLE, msg.sender);
+        
+        // Verify the deployer as the first institution
+        _verifyInstitution(
+            msg.sender,
+            "Credichain Platform",
+            "https://credichain.org",
+            InstitutionCategory.OTHER
+        );
+    }
 }
