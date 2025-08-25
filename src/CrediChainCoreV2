@@ -89,4 +89,10 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         CredentialType credentialType,
         uint256 expirationTimestamp
     );
+    event CredentialRevoked(
+        uint256 indexed tokenId,
+        address indexed issuer,
+        address indexed holder,
+        string reason
+    );
 }
