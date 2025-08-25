@@ -69,4 +69,6 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     uint256 public constant MAX_BATCH_SIZE = 50;
     uint256 public constant REPUTATION_DECAY_RATE = 5; // 5% per year
 
+    address[] public verifiedInstitutionsList;
+
 }
