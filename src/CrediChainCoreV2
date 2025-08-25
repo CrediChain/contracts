@@ -64,4 +64,20 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     mapping(CredentialType => uint256) public credentialTypeCount;
     mapping(address => uint256[]) public userCredentials;
 
+    // Reputation and governance
+    uint256 public constant MIN_REPUTATION_THRESHOLD = 100;
+    uint256 public constant MAX_BATCH_SIZE = 50;
+    uint256 public constant REPUTATION_DECAY_RATE = 5; // 5% per year
+
+    address[] public verifiedInstitutionsList;
+    uint256 public totalCredentialsIssued;
+    uint256 public totalInstitutions;
+
+    // Events
+    event InstitutionVerified(
+        address indexed institution, 
+        string name, 
+        InstitutionCategory category,
+        uint256 timestamp
+    );
 }
