@@ -64,4 +64,6 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     mapping(CredentialType => uint256) public credentialTypeCount;
     mapping(address => uint256[]) public userCredentials;
 
+    // Reputation and governance
+
 }
