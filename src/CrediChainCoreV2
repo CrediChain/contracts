@@ -80,4 +80,6 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         InstitutionCategory category,
         uint256 timestamp
     );
+    event InstitutionRemoved(address indexed institution, uint256 timestamp);
+
 }
