@@ -101,6 +101,11 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         uint256[] tokenIds
     );
 
+    /**
+     * @notice Initializes the CrediChainCore V2 contract
+     * @param _soulBoundNFT The address of the SoulBoundNFT contract
+     * @param _identityManager The address of the IdentityManager contract
+     */
     constructor(
         address _soulBoundNFT,
         address _identityManager
