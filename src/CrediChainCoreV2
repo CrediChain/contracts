@@ -73,4 +73,6 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     uint256 public totalCredentialsIssued;
     uint256 public totalInstitutions;
 
+    // Events
+
 }
