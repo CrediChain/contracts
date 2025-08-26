@@ -221,6 +221,14 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         emit InstitutionRemoved(institution, block.timestamp);
     }
 
+    /**
+     * @notice Issues a credential with expiration and type
+     * @param to Address to receive the credential
+     * @param uri Metadata URI
+     * @param credentialType Type of credential being issued
+     * @param expirationTimestamp When the credential expires (0 for no expiration)
+     * @param ipfsHash IPFS hash for additional metadata
+     */
     function issueCredential(
         address to,
         string memory uri,
