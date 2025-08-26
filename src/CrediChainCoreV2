@@ -201,6 +201,10 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         emit InstitutionVerified(institution, name, category, block.timestamp);
     }
 
+    /**
+     * @notice Removes institution verification
+     * @param institution Address of the institution to remove
+    */
     function removeInstitution(address institution) 
         external 
         onlyRole(ADMIN_ROLE) 
