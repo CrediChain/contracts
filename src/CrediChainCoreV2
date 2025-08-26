@@ -146,6 +146,9 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         _;
     }
 
+    /**
+     * @notice Modifier to ensure target user is verified
+    */
     modifier onlyVerifiedUser(address user) {
         if (!identityManager.getIsVerified(user)) {
             revert CrediChainCore__OnlyVerifiedUsers();
