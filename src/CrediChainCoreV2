@@ -131,4 +131,93 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
             InstitutionCategory.OTHER
         );
     }
+
+    /**
+     * @notice Modifier to ensure caller is a verified institution with sufficient reputation
+    */
+    modifier onlyVerifiedInstitution() {
+        Institution memory inst = institutions[msg.sender];
+        if (!inst.isVerified || !identityManager.getIsVerified(msg.sender)) {
+            revert CrediChainCore__OnlyVerifiedInstitutions();
+        }
+        if (inst.reputation < MIN_REPUTATION_THRESHOLD) {
+            revert CrediChainCore__InsufficientReputation();
+        }
+        _;
+    }
+
+    /**
+     * @notice Modifier to ensure target user is verified
+    */
+    modifier onlyVerifiedUser(address user) {
+        if (!identityManager.getIsVerified(user)) {
+            revert CrediChainCore__OnlyVerifiedUsers();
+        }
+        _;
+    }
+
+    /**
+     * @notice Verifies an institution with enhanced metadata
+     * @param institution Address of the institution
+     * @param name Name of the institution
+     * @param website Website URL of the institution
+     * @param category Category of the institution
+     */
+    function verifyInstitution(
+        address institution,
+        string memory name,
+        string memory website,
+        InstitutionCategory category
+    ) external onlyRole(INSTITUTION_VERIFIER_ROLE) whenNotPaused {
+        if (institutions[institution].isVerified) {
+            revert CrediChainCore__InstitutionAlreadyVerified();
+        }
+        _verifyInstitution(institution, name, website, category);
+    }
+
+    /**
+     * @notice Internal function to verify institution
+    */
+    function _verifyInstitution(
+        address institution,
+        string memory name,
+        string memory website,
+        InstitutionCategory category
+    ) internal {
+        institutions[institution] = Institution({
+            isVerified: true,
+            reputation: MIN_REPUTATION_THRESHOLD,
+            credentialsIssued: 0,
+            credentialsRevoked: 0,
+            verificationTimestamp: block.timestamp,
+            name: name,
+            website: website,
+            category: category
+        });
+        
+        verifiedInstitutionsList.push(institution);
+        totalInstitutions++;
+        
+        emit InstitutionVerified(institution, name, category, block.timestamp);
+    }
+
+    /**
+     * @notice Removes institution verification
+     * @param institution Address of the institution to remove
+    */
+    function removeInstitution(address institution) 
+        external 
+        onlyRole(ADMIN_ROLE) 
+        whenNotPaused 
+    {
+        if (!institutions[institution].isVerified) {
+            revert CrediChainCore__InstitutionNotFound();
+        }
+        
+        institutions[institution].isVerified = false;
+        _removeFromInstitutionsList(institution);
+        totalInstitutions--;
+        
+        emit InstitutionRemoved(institution, block.timestamp);
+    }
 }
