@@ -132,6 +132,9 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         );
     }
 
+    /**
+     * @notice Modifier to ensure caller is a verified institution with sufficient reputation
+    */
     modifier onlyVerifiedInstitution() {
         Institution memory inst = institutions[msg.sender];
         if (!inst.isVerified || !identityManager.getIsVerified(msg.sender)) {
