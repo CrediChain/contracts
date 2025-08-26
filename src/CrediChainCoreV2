@@ -200,4 +200,20 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         
         emit InstitutionVerified(institution, name, category, block.timestamp);
     }
+
+    function removeInstitution(address institution) 
+        external 
+        onlyRole(ADMIN_ROLE) 
+        whenNotPaused 
+    {
+        if (!institutions[institution].isVerified) {
+            revert CrediChainCore__InstitutionNotFound();
+        }
+        
+        institutions[institution].isVerified = false;
+        _removeFromInstitutionsList(institution);
+        totalInstitutions--;
+        
+        emit InstitutionRemoved(institution, block.timestamp);
+    }
 }
