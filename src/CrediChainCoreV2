@@ -174,4 +174,27 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         }
         _verifyInstitution(institution, name, website, category);
     }
+
+    function _verifyInstitution(
+        address institution,
+        string memory name,
+        string memory website,
+        InstitutionCategory category
+    ) internal {
+        institutions[institution] = Institution({
+            isVerified: true,
+            reputation: MIN_REPUTATION_THRESHOLD,
+            credentialsIssued: 0,
+            credentialsRevoked: 0,
+            verificationTimestamp: block.timestamp,
+            name: name,
+            website: website,
+            category: category
+        });
+        
+        verifiedInstitutionsList.push(institution);
+        totalInstitutions++;
+        
+        emit InstitutionVerified(institution, name, category, block.timestamp);
+    }
 }
