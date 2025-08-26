@@ -156,6 +156,13 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         _;
     }
 
+    /**
+     * @notice Verifies an institution with enhanced metadata
+     * @param institution Address of the institution
+     * @param name Name of the institution
+     * @param website Website URL of the institution
+     * @param category Category of the institution
+     */
     function verifyInstitution(
         address institution,
         string memory name,
