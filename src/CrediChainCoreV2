@@ -220,4 +220,48 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         
         emit InstitutionRemoved(institution, block.timestamp);
     }
+
+    function issueCredential(
+        address to,
+        string memory uri,
+        CredentialType credentialType,
+        uint256 expirationTimestamp,
+        string memory ipfsHash
+    )
+        external
+        onlyVerifiedInstitution
+        onlyVerifiedUser(to)
+        whenNotPaused
+        nonReentrant
+        returns (uint256 tokenId)
+    {
+        tokenId = soulBoundNFT.safeMint(msg.sender, to, uri);
+        
+        credentialMetadata[tokenId] = CredentialMetadata({
+            issuer: msg.sender,
+            issuanceTimestamp: block.timestamp,
+            expirationTimestamp: expirationTimestamp,
+            credentialType: credentialType,
+            isActive: true,
+            ipfsHash: ipfsHash
+        });
+        
+        userCredentials[to].push(tokenId);
+        credentialTypeCount[credentialType]++;
+        totalCredentialsIssued++;
+        
+        // Update institution stats
+        institutions[msg.sender].credentialsIssued++;
+        _updateReputation(msg.sender, true);
+        
+        emit CredentialIssued(
+            to, 
+            tokenId, 
+            msg.sender, 
+            credentialType, 
+            expirationTimestamp
+        );
+        
+        return tokenId;
+    }
 }
