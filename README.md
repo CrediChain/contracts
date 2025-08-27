@@ -2,6 +2,14 @@
 
 **Credichain V2** is an advanced decentralized platform for secure verification and credential issuance, featuring enhanced security, batch operations, reputation systems, and comprehensive analytics. Building on the foundation of V1, this version introduces multi-role access control, credential expiration, institution reputation tracking, and gas-optimized batch operations.
 
+## 🚀 What's New in V2
+
+### Enhanced Security & Access Control
+- **Multi-role Access Control**: Separate roles for admins, institution verifiers, and emergency responders
+- **Reentrancy Protection**: All state-changing functions protected against reentrancy attacks
+- **Emergency Pause**: Circuit breaker functionality for emergency situations
+- **Input Validation**: Comprehensive input validation with custom errors for gas optimization
+
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
