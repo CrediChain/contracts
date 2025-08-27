@@ -273,6 +273,14 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         return tokenId;
     }
 
+    /**
+     * @notice Issues multiple credentials in a single transaction
+     * @param recipients Array of recipient addresses
+     * @param uris Array of metadata URIs
+     * @param credentialTypes Array of credential types
+     * @param expirationTimestamps Array of expiration timestamps
+     * @param ipfsHashes Array of IPFS hashes
+     */
     function batchIssueCredentials(
         address[] calldata recipients,
         string[] calldata uris,
