@@ -272,4 +272,48 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         
         return tokenId;
     }
+
+    function batchIssueCredentials(
+        address[] calldata recipients,
+        string[] calldata uris,
+        CredentialType[] calldata credentialTypes,
+        uint256[] calldata expirationTimestamps,
+        string[] calldata ipfsHashes
+    )
+        external
+        onlyVerifiedInstitution
+        whenNotPaused
+        nonReentrant
+        returns (uint256[] memory tokenIds)
+    {
+        uint256 length = recipients.length;
+        if (length > MAX_BATCH_SIZE || length == 0) {
+            revert CrediChainCore__BatchSizeLimitExceeded();
+        }
+        if (length != uris.length || length != credentialTypes.length || 
+            length != expirationTimestamps.length || length != ipfsHashes.length) {
+            revert CrediChainCore__InvalidInput();
+        }
+
+        tokenIds = new uint256[](length);
+        
+        for (uint256 i = 0; i < length;) {
+            if (!identityManager.getIsVerified(recipients[i])) {
+                revert CrediChainCore__OnlyVerifiedUsers();
+            }
+            
+            tokenIds[i] = issueCredential(
+                recipients[i],
+                uris[i],
+                credentialTypes[i],
+                expirationTimestamps[i],
+                ipfsHashes[i]
+            );
+            
+            unchecked { ++i; }
+        }
+        
+        emit BatchCredentialsIssued(msg.sender, length, tokenIds);
+        return tokenIds;
+    }
 }
