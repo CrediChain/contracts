@@ -274,41 +274,54 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     }
 
     /**
-     * @notice Executes a pending transaction after multisig approval
-     * @param _txId ID of the transaction to execute
+     * @notice Issues multiple credentials in a single transaction
+     * @param recipients Array of recipient addresses
+     * @param uris Array of metadata URIs
+     * @param credentialTypes Array of credential types
+     * @param expirationTimestamps Array of expiration timestamps
+     * @param ipfsHashes Array of IPFS hashes
      */
-    function executeCreateMemecoin(uint256 _txId) 
-        external 
-        onlyMultiSigContract 
-        onlyPendingTx(_txId) 
-        nonReentrant 
+    function batchIssueCredentials(
+        address[] calldata recipients,
+        string[] calldata uris,
+        CredentialType[] calldata credentialTypes,
+        uint256[] calldata expirationTimestamps,
+        string[] calldata ipfsHashes
+    )
+        external
+        onlyVerifiedInstitution
+        whenNotPaused
+        nonReentrant
+        returns (uint256[] memory tokenIds)
     {
-        TransactionData storage txData = transactions[_txId];
+        uint256 length = recipients.length;
+        if (length > MAX_BATCH_SIZE || length == 0) {
+            revert CrediChainCore__BatchSizeLimitExceeded();
+        }
+        if (length != uris.length || length != credentialTypes.length || 
+            length != expirationTimestamps.length || length != ipfsHashes.length) {
+            revert CrediChainCore__InvalidInput();
+        }
+
+        tokenIds = new uint256[](length);
         
-        // Create the token
-        TokenContract newToken = _deployToken(txData);
+        for (uint256 i = 0; i < length;) {
+            if (!identityManager.getIsVerified(recipients[i])) {
+                revert CrediChainCore__OnlyVerifiedUsers();
+            }
+            
+            tokenIds[i] = issueCredential(
+                recipients[i],
+                uris[i],
+                credentialTypes[i],
+                expirationTimestamps[i],
+                ipfsHashes[i]
+            );
+            
+            unchecked { ++i; }
+        }
         
-        // Update transaction status
-        txData.isPending = false;
-        txData.isExecuted = true;
-        txData.tokenAddress = address(newToken);
-        txData.executedAt = block.timestamp;
-        
-        // Update tracking
-        isTokenCreated[address(newToken)] = true;
-        tokenToOwner[address(newToken)] = txData.owner;
-        totalTokensCreated++;
-        
-        // Initialize liquidity pool
-        _initializeLiquidityPool(address(newToken));
-        
-        emit MemecoinCreated(
-            txData.owner, 
-            address(newToken), 
-            txData.tokenName, 
-            txData.tokenSymbol, 
-            txData.totalSupply,
-            block.timestamp
-        );
+        emit BatchCredentialsIssued(msg.sender, length, tokenIds);
+        return tokenIds;
     }
 }
