@@ -325,6 +325,11 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         return tokenIds;
     }
 
+    /**
+     * @notice Revokes a credential with reason
+     * @param tokenId ID of the credential to revoke
+     * @param reason Reason for revocation
+     */
     function revokeCredential(uint256 tokenId, string calldata reason) 
         external 
         onlyVerifiedInstitution 
