@@ -324,4 +324,31 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         emit BatchCredentialsIssued(msg.sender, length, tokenIds);
         return tokenIds;
     }
+
+    function revokeCredential(uint256 tokenId, string calldata reason) 
+        external 
+        onlyVerifiedInstitution 
+        whenNotPaused 
+        nonReentrant 
+    {
+        CredentialMetadata storage metadata = credentialMetadata[tokenId];
+        if (metadata.issuer != msg.sender) {
+            revert OnlyTheIssuerCanRevoke();
+        }
+        if (!metadata.isActive) {
+            revert CrediChainCore__InvalidInput();
+        }
+        
+        address holder = soulBoundNFT.ownerOf(tokenId);
+        soulBoundNFT.revoke(msg.sender, tokenId);
+        
+        metadata.isActive = false;
+        institutions[msg.sender].credentialsRevoked++;
+        _updateReputation(msg.sender, false);
+        
+        // Remove from user's credential list
+        _removeFromUserCredentials(holder, tokenId);
+        
+        emit CredentialRevoked(tokenId, msg.sender, holder, reason);
+    }
 }
