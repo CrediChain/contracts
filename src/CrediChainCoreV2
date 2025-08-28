@@ -356,4 +356,23 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         
         emit CredentialRevoked(tokenId, msg.sender, holder, reason);
     }
+
+    /**
+     * @notice Updates institution reputation based on actions
+     * @param institution Address of the institution
+     * @param positive Whether the action is positive (true) or negative (false)
+     */
+    function _updateReputation(address institution, bool positive) internal {
+        Institution storage inst = institutions[institution];
+        
+        if (positive) {
+            inst.reputation += 10; // Increase reputation for issuing credentials
+        } else {
+            if (inst.reputation >= 20) {
+                inst.reputation -= 20; // Decrease reputation for revoking credentials
+            }
+        }
+        
+        emit InstitutionReputationUpdated(institution, inst.reputation);
+    }
 }
