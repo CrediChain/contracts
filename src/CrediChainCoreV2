@@ -376,6 +376,11 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         emit InstitutionReputationUpdated(institution, inst.reputation);
     }
 
+    /**
+     * @notice Checks if a credential is valid (not expired and active)
+     * @param tokenId ID of the credential
+     * @return isValid Whether the credential is valid
+     */
     function isCredentialValid(uint256 tokenId) external view returns (bool isValid) {
         CredentialMetadata memory metadata = credentialMetadata[tokenId];
         
