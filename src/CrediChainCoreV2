@@ -375,4 +375,13 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         
         emit InstitutionReputationUpdated(institution, inst.reputation);
     }
+
+    function isCredentialValid(uint256 tokenId) external view returns (bool isValid) {
+        CredentialMetadata memory metadata = credentialMetadata[tokenId];
+        
+        if (!metadata.isActive) return false;
+        if (metadata.expirationTimestamp == 0) return true; // No expiration
+        
+        return block.timestamp <= metadata.expirationTimestamp;
+    }
 }
