@@ -390,6 +390,11 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         return block.timestamp <= metadata.expirationTimestamp;
     }
 
+    /**
+     * @notice Gets detailed credential information
+     * @param tokenId ID of the credential
+     * @return metadata Full credential metadata
+     */
     function getCredentialDetails(uint256 tokenId) 
         external 
         view 
