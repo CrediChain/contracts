@@ -402,4 +402,12 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     {
         return credentialMetadata[tokenId];
     }
+
+    function getInstitutionStats(address institution) 
+        external 
+        view 
+        returns (Institution memory institutionData) 
+    {
+        return institutions[institution];
+    }
 }
