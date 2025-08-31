@@ -19,6 +19,7 @@
 
 ### Analytics & Monitoring
 - **Platform Statistics**: Real-time analytics on credential issuance and platform usage
+- **Institution Categories**: Classification system for different types of institutions
 
 -----------------------------------------------------------------------------------------
 
