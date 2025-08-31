@@ -17,7 +17,7 @@
 - **Credential Types**: Support for degrees, certificates, diplomas, licenses, and badges
 - **Enhanced Metadata**: IPFS integration and comprehensive credential metadata
 
-
+### Analytics & Monitoring
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
