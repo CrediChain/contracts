@@ -12,6 +12,7 @@
 
 ### Advanced Features
 - **Batch Operations**: Issue up to 50 credentials in a single transaction
+- **Credential Expiration**: Support for time-limited credentials
 
 
 -----------------------------------------------------------------------------------------
