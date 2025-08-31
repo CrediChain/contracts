@@ -15,6 +15,7 @@
 - **Credential Expiration**: Support for time-limited credentials
 - **Institution Reputation System**: Dynamic reputation scoring based on credential issuance and revocation
 - **Credential Types**: Support for degrees, certificates, diplomas, licenses, and badges
+- **Enhanced Metadata**: IPFS integration and comprehensive credential metadata
 
 
 -----------------------------------------------------------------------------------------
