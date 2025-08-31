@@ -415,4 +415,12 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     {
         return institutions[institution];
     }
+
+    function getVerifiedInstitutions() 
+        external 
+        view 
+        returns (address[] memory institutionAddresses) 
+    {
+        return verifiedInstitutionsList;
+    }
 }
