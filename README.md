@@ -11,6 +11,7 @@
 - **Input Validation**: Comprehensive input validation with custom errors for gas optimization
 
 ### Advanced Features
+- **Batch Operations**: Issue up to 50 credentials in a single transaction
 
 
 -----------------------------------------------------------------------------------------
