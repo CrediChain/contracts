@@ -18,6 +18,8 @@
 - **Enhanced Metadata**: IPFS integration and comprehensive credential metadata
 
 ### Analytics & Monitoring
+- **Platform Statistics**: Real-time analytics on credential issuance and platform usage
+
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
