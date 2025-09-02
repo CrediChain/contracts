@@ -454,4 +454,11 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         // In a real implementation, you'd iterate through all credentials to count active ones
         return [totalCredentialsIssued, totalInstitutions, activeCredentials];
     }
+
+    /**
+     * @notice Emergency pause function
+     */
+    function pause() external onlyRole(EMERGENCY_ROLE) {
+        _pause();
+    }
 }
