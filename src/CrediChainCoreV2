@@ -440,4 +440,14 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     {
         return credentialTypeCount[credentialType];
     }
+
+    function getPlatformStats() 
+        external 
+        view 
+        returns (uint256[3] memory stats) 
+    {
+        uint256 activeCredentials = totalCredentialsIssued;
+        // In a real implementation, you'd iterate through all credentials to count active ones
+        return [totalCredentialsIssued, totalInstitutions, activeCredentials];
+    }
 }
