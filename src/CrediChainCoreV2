@@ -461,4 +461,11 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     function pause() external onlyRole(EMERGENCY_ROLE) {
         _pause();
     }
+
+    /**
+     * @notice Emergency unpause function
+     */
+    function unpause() external onlyRole(EMERGENCY_ROLE) {
+        _unpause();
+    }
 }
