@@ -469,6 +469,9 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         _unpause();
     }
 
+    /**
+     * @notice Internal function to remove institution from list
+     */
     function _removeFromInstitutionsList(address institution) internal {
         for (uint256 i = 0; i < verifiedInstitutionsList.length; i++) {
             if (verifiedInstitutionsList[i] == institution) {
