@@ -481,4 +481,17 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
             }
         }
     }
+
+    /**
+     * @notice Internal function to remove credential from user's list
+     */
+    function _removeFromUserCredentials(address user, uint256 tokenId) internal {
+        uint256[] storage credentials = userCredentials[user];
+        for (uint256 i = 0; i < credentials.length; i++) {
+            if (credentials[i] == tokenId) {
+                credentials[i] = credentials[credentials.length - 1];
+                credentials.pop();
+                break;
+            }
+        }
 }
