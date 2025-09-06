@@ -494,4 +494,17 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
                 break;
             }
         }
+
+    // Legacy compatibility functions
+    function getCredentialIssuer(uint256 tokenId) external view returns (address) {
+        return credentialMetadata[tokenId].issuer;
+    }
+
+    function getIsInstitutuinVerified(address institution) external view returns (bool) {
+        return institutions[institution].isVerified;
+    }
+
+    function getStudentCredentials(address user) external view returns (SoulBoundNFT.NFTData[] memory) {
+        return soulBoundNFT.getTokensByAddress(user);
+    }
 }
