@@ -494,4 +494,8 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
                 break;
             }
         }
+
+    function getCredentialIssuer(uint256 tokenId) external view returns (address) {
+        return credentialMetadata[tokenId].issuer;
+    }
 }
