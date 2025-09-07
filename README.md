@@ -59,6 +59,12 @@
   - Credential expiration support
   - Emergency pause functionality
 
+### 2. **IdentityManager** - Identity Verification
+- **Purpose**: Manages World ID-based verification for users and institutions
+- **Key Features**:
+  - Integration with World ID protocol
+  - Identity verification status tracking
+  - Privacy-preserving authentication
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
