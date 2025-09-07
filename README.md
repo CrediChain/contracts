@@ -48,6 +48,30 @@
 - **World ID**: Privacy-preserving identity verification
 - **IPFS**: Decentralized metadata storage
 
+## 📋 Smart Contracts
+
+### 1. **CrediChainCore V2** - Core Logic Contract
+- **Purpose**: Manages institutions, credential issuance, and platform governance
+- **Key Features**:
+  - Multi-role access control (Admin, Institution Verifier, Emergency)
+  - Batch credential issuance (up to 50 per transaction)
+  - Institution reputation system
+  - Credential expiration support
+  - Emergency pause functionality
+
+### 2. **IdentityManager** - Identity Verification
+- **Purpose**: Manages World ID-based verification for users and institutions
+- **Key Features**:
+  - Integration with World ID protocol
+  - Identity verification status tracking
+  - Privacy-preserving authentication
+
+ ### 3. **SoulBoundNFT** - Credential Storage
+- **Purpose**: Non-transferable NFTs representing academic credentials
+- **Key Features**:
+  - Soulbound token implementation
+  - Metadata storage with IPFS support
+  - Revocation functionality
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
