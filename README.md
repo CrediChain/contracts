@@ -48,6 +48,17 @@
 - **World ID**: Privacy-preserving identity verification
 - **IPFS**: Decentralized metadata storage
 
+## 📋 Smart Contracts
+
+### 1. **CrediChainCore V2** - Core Logic Contract
+- **Purpose**: Manages institutions, credential issuance, and platform governance
+- **Key Features**:
+  - Multi-role access control (Admin, Institution Verifier, Emergency)
+  - Batch credential issuance (up to 50 per transaction)
+  - Institution reputation system
+  - Credential expiration support
+  - Emergency pause functionality
+
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
