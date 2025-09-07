@@ -37,6 +37,17 @@
     └─────────┘              └─────────┘             └─────────┘
 ```
 
+## 🛠️ Tech Stack
+
+- **Foundry Suite**: Complete development environment
+  - **Forge**: Testing and deployment framework
+  - **Anvil**: Local Ethereum node for development
+  - **Cast**: Command-line tool for contract interaction
+- **OpenZeppelin Contracts**: Security-audited contract libraries
+- **Base OnchainKit**: Smart wallet integration
+- **World ID**: Privacy-preserving identity verification
+- **IPFS**: Decentralized metadata storage
+
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
