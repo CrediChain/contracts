@@ -65,6 +65,13 @@
   - Integration with World ID protocol
   - Identity verification status tracking
   - Privacy-preserving authentication
+
+ ### 3. **SoulBoundNFT** - Credential Storage
+- **Purpose**: Non-transferable NFTs representing academic credentials
+- **Key Features**:
+  - Soulbound token implementation
+  - Metadata storage with IPFS support
+  - Revocation functionality
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
