@@ -82,7 +82,10 @@
 | SoulBoundNFT | `0x123C83BCbC38934BB033ea24d9DD6d98B7F1f552` | [View Contract](https://base-sepolia.blockscout.com/address/0x123C83BCbC38934BB033ea24d9DD6d98B7F1f552?tab=write_contract) |
 
 ## 🚀 Getting Started
-
+### Prerequisites
+- **Node.js** (v16 or higher)
+- **Git**
+- **Foundry** (latest version)
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
