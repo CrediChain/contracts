@@ -72,6 +72,20 @@
   - Soulbound token implementation
   - Metadata storage with IPFS support
   - Revocation functionality
+
+## 🎯 Contract Addresses (Base Sepolia)
+
+| Contract | Address | Block Explorer |
+|----------|---------|----------------|
+| IdentityManager | `0x436fB1cd4852235459D4806DD1d4958e7692E461` | [View Contract](https://base-sepolia.blockscout.com/address/0x436fB1cd4852235459D4806DD1d4958e7692E461?tab=write_contract) |
+| CrediChainCore V2 | `TBD` | Coming Soon |
+| SoulBoundNFT | `0x123C83BCbC38934BB033ea24d9DD6d98B7F1f552` | [View Contract](https://base-sepolia.blockscout.com/address/0x123C83BCbC38934BB033ea24d9DD6d98B7F1f552?tab=write_contract) |
+
+## 🚀 Getting Started
+### Prerequisites
+- **Node.js** (v16 or higher)
+- **Git**
+- **Foundry** (latest version)
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
