@@ -101,6 +101,15 @@ forge install
 npm install
 ```
 
+### Building the Project
+
+```bash
+# Compile all contracts
+forge build
+
+# Generate documentation
+forge doc
+```
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
