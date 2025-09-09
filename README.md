@@ -86,6 +86,9 @@
 - **Node.js** (v16 or higher)
 - **Git**
 - **Foundry** (latest version)
+
+### Installation
+
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
