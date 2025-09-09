@@ -86,6 +86,30 @@
 - **Node.js** (v16 or higher)
 - **Git**
 - **Foundry** (latest version)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-repo/credichain-v2
+cd credichain-v2
+
+# Install Foundry dependencies
+forge install
+
+# Install Node.js dependencies (if any)
+npm install
+```
+
+### Building the Project
+
+```bash
+# Compile all contracts
+forge build
+
+# Generate documentation
+forge doc
+```
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
