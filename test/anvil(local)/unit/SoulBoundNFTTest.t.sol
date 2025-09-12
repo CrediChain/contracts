@@ -24,10 +24,7 @@ contract SoulBoundNFTTest is Test {
         vm.startPrank(owner);
         soulBoundNFT = new SoulBoundNFT(owner);
         identitymanager = new IdentityManager(address(0), "", "");
-        credCore = new CrediChainCore(
-            address(soulBoundNFT),
-            address(identitymanager)
-        );
+        credCore = new CrediChainCore(address(soulBoundNFT), address(identitymanager));
         // Call setCrediChainCore to set the CrediChainCore address as owner
         soulBoundNFT.setCrediChainCore(address(credCore));
         // Call setIdentityManager to set the IdentityManager address as owner
@@ -48,11 +45,7 @@ contract SoulBoundNFTTest is Test {
         credCore.verifyInstitution(unverifiedInstitution);
         // Mint a soul-bound NFT to a student as a verified institution
         vm.prank(unverifiedInstitution);
-        uint256 tokenId = soulBoundNFT.safeMint(
-            unverifiedInstitution,
-            student,
-            "https://example.com"
-        );
+        uint256 tokenId = soulBoundNFT.safeMint(unverifiedInstitution, student, "https://example.com");
         // Assertions
         assertEq(soulBoundNFT.ownerOf(tokenId), student);
         assertEq(soulBoundNFT.tokenURI(tokenId), "https://example.com");
@@ -69,9 +62,7 @@ contract SoulBoundNFTTest is Test {
         soulBoundNFT.safeMint(verifiedInstitution, student, "third");
         vm.stopPrank();
         // Call the getter to test
-        SoulBoundNFT.NFTData[] memory nft = soulBoundNFT.getTokensByAddress(
-            student
-        );
+        SoulBoundNFT.NFTData[] memory nft = soulBoundNFT.getTokensByAddress(student);
         // Assertions
         for (uint256 i = 0; i < nft.length; i++) {
             console.log(nft[i].tokenURI);

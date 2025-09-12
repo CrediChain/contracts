@@ -32,16 +32,10 @@ contract SoulBoundNFT is ERC721, ERC721URIStorage, Ownable {
     error SoulBoundNFT__OnlyVerifiedInstitutions();
     error SoulBoundNFT__OnlyVerifiedUsers();
 
-    event CredentialMinted(
-        address indexed to,
-        uint256 indexed tokenId,
-        string uri
-    );
+    event CredentialMinted(address indexed to, uint256 indexed tokenId, string uri);
     event CredentialRevoked(uint256 indexed tokenId);
 
-    constructor(
-        address initialOwner
-    ) ERC721("EducationalCredential", "EDU") Ownable(initialOwner) {
+    constructor(address initialOwner) ERC721("EducationalCredential", "EDU") Ownable(initialOwner) {
         transferOwnership(initialOwner);
     }
 
@@ -53,10 +47,7 @@ contract SoulBoundNFT is ERC721, ERC721URIStorage, Ownable {
     }
 
     modifier onlyVerifiedInstitutions(address user) {
-        if (
-            !credCore.getIsInstitutuinVerified(user) &&
-            !identityManager.getIsVerified(user)
-        ) {
+        if (!credCore.getIsInstitutuinVerified(user) && !identityManager.getIsVerified(user)) {
             revert SoulBoundNFT__OnlyVerifiedInstitutions();
         }
         _;
@@ -70,11 +61,7 @@ contract SoulBoundNFT is ERC721, ERC721URIStorage, Ownable {
         identityManager = IdentityManager(_address);
     }
 
-    function safeMint(
-        address from,
-        address to,
-        string memory uri
-    )
+    function safeMint(address from, address to, string memory uri)
         public
         onlyVerifiedInstitutions(from)
         onlyVerifiedUser(to)
@@ -88,10 +75,7 @@ contract SoulBoundNFT is ERC721, ERC721URIStorage, Ownable {
         return tokenId;
     }
 
-    function revoke(
-        address from,
-        uint256 tokenId
-    ) public onlyVerifiedInstitutions(from) {
+    function revoke(address from, uint256 tokenId) public onlyVerifiedInstitutions(from) {
         address tokenOwner = ownerOf(tokenId);
         if (tokenOwner == address(0)) revert SoulBoundNFT__TokenDoesNotExist();
         _burn(tokenId);
@@ -107,24 +91,16 @@ contract SoulBoundNFT is ERC721, ERC721URIStorage, Ownable {
         emit CredentialRevoked(tokenId);
     }
 
-    function tokenURI(
-        uint256 tokenId
-    ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    ) public view override(ERC721, ERC721URIStorage) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721URIStorage) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
     // Disable transfer functions
-    function transferFrom(
-        address,
-        address,
-        uint256
-    ) public pure override(ERC721, IERC721) {
+    function transferFrom(address, address, uint256) public pure override(ERC721, IERC721) {
         revert SoulBoundNFT__SoulBoundTokensCannotBeTransferred();
     }
 
@@ -132,36 +108,22 @@ contract SoulBoundNFT is ERC721, ERC721URIStorage, Ownable {
         revert SoulBoundNFT__SoulBoundTokensCannotBeTransferred();
     }
 
-    function setApprovalForAll(
-        address,
-        bool
-    ) public pure override(ERC721, IERC721) {
+    function setApprovalForAll(address, bool) public pure override(ERC721, IERC721) {
         revert SoulBoundNFT__SoulBoundTokensCannotBeTransferred();
     }
 
-    function _safeTransfer(
-        address,
-        address,
-        uint256,
-        bytes memory
-    ) internal pure override {
+    function _safeTransfer(address, address, uint256, bytes memory) internal pure override {
         revert SoulBoundNFT__SoulBoundTokensCannotBeTransferred();
     }
 
     // Updated getTokensByAddress using the mapping
-    function getTokensByAddress(
-        address _address
-    ) public view returns (NFTData[] memory) {
+    function getTokensByAddress(address _address) public view returns (NFTData[] memory) {
         uint256[] memory tokenIds = nftData[_address];
         NFTData[] memory vault = new NFTData[](tokenIds.length);
 
         for (uint256 i = 0; i < tokenIds.length; i++) {
             uint256 tokenId = tokenIds[i];
-            vault[i] = NFTData({
-                tokenId: tokenId,
-                ownerAddress: _address,
-                tokenURI: tokenURI(tokenId)
-            });
+            vault[i] = NFTData({tokenId: tokenId, ownerAddress: _address, tokenURI: tokenURI(tokenId)});
         }
         return vault;
     }
