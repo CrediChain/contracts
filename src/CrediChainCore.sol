@@ -23,21 +23,14 @@ contract CrediChainCore is Ownable {
 
     event InstitutionVerified(address indexed institution);
     event InstitutionRemoved(address indexed institution);
-    event CredentialIssued(
-        address indexed to,
-        uint256 indexed tokenId,
-        address indexed issuer
-    );
+    event CredentialIssued(address indexed to, uint256 indexed tokenId, address indexed issuer);
 
     /**
      * @notice Initializes the CrediChainCore contract with the SoulBoundNFT and IdentityManager addresses.
      * @param _soulBoundNFT The address of the SoulBoundNFT contract.
      * @param _identityManager The address of the IdentityManager contract.
      */
-    constructor(
-        address _soulBoundNFT,
-        address _identityManager
-    ) Ownable(msg.sender) {
+    constructor(address _soulBoundNFT, address _identityManager) Ownable(msg.sender) {
         soulBoundNFT = SoulBoundNFT(_soulBoundNFT);
         identityManager = IdentityManager(_identityManager);
         verifiedInstitutions[msg.sender] = true;
@@ -47,10 +40,7 @@ contract CrediChainCore is Ownable {
      * @notice Modifier to ensure that the caller is a verified institution and verified with world id.
      */
     modifier onlyVerifiedInstitution() {
-        if (
-            !verifiedInstitutions[msg.sender] &&
-            !identityManager.getIsVerified(msg.sender)
-        ) {
+        if (!verifiedInstitutions[msg.sender] && !identityManager.getIsVerified(msg.sender)) {
             revert CrediChainCore__OnlyVerifiedInstitutions();
         }
         _;
@@ -93,10 +83,7 @@ contract CrediChainCore is Ownable {
      * @param to The address of the user to receive the credential.
      * @param uri The URI that points to the metadata of the credential.
      */
-    function issueCredential(
-        address to,
-        string memory uri
-    )
+    function issueCredential(address to, string memory uri)
         public
         onlyVerifiedInstitution
         onlyVerifiedUser(to)
@@ -126,15 +113,11 @@ contract CrediChainCore is Ownable {
      * @param tokenId The ID of the credential.
      * @return issuer The address of the institution that issued the credential.
      */
-    function getCredentialIssuer(
-        uint256 tokenId
-    ) public view returns (address) {
+    function getCredentialIssuer(uint256 tokenId) public view returns (address) {
         return credentialIssuers[tokenId];
     }
 
-    function getIsInstitutuinVerified(
-        address institution
-    ) public view returns (bool) {
+    function getIsInstitutuinVerified(address institution) public view returns (bool) {
         return verifiedInstitutions[institution];
     }
 
@@ -143,9 +126,7 @@ contract CrediChainCore is Ownable {
      * @param _add The address of the user.
      * @return NFTData structure representing The list of NFTs owned by the user.
      */
-    function getStudentCredentials(
-        address _add
-    ) public view returns (SoulBoundNFT.NFTData[] memory) {
+    function getStudentCredentials(address _add) public view returns (SoulBoundNFT.NFTData[] memory) {
         return soulBoundNFT.getTokensByAddress(_add);
     }
 }

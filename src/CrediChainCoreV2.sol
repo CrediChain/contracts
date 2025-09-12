@@ -30,7 +30,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     error CrediChainCore__BatchSizeLimitExceeded();
     error CrediChainCore__InvalidInput();
 
-   // Structs
+    // Structs
     struct Institution {
         bool isVerified;
         uint256 reputation;
@@ -52,8 +52,20 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
     }
 
     // Enums
-    enum InstitutionCategory { UNIVERSITY, COLLEGE, CERTIFICATION_BODY, GOVERNMENT, OTHER }
-    enum CredentialType { DEGREE, CERTIFICATE, DIPLOMA, LICENSE, BADGE }
+    enum InstitutionCategory {
+        UNIVERSITY,
+        COLLEGE,
+        CERTIFICATION_BODY,
+        GOVERNMENT,
+        OTHER
+    }
+    enum CredentialType {
+        DEGREE,
+        CERTIFICATE,
+        DIPLOMA,
+        LICENSE,
+        BADGE
+    }
 
     // State variables
     SoulBoundNFT public immutable soulBoundNFT;
@@ -75,10 +87,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
 
     // Events
     event InstitutionVerified(
-        address indexed institution, 
-        string name, 
-        InstitutionCategory category,
-        uint256 timestamp
+        address indexed institution, string name, InstitutionCategory category, uint256 timestamp
     );
     event InstitutionRemoved(address indexed institution, uint256 timestamp);
     event InstitutionReputationUpdated(address indexed institution, uint256 newReputation);
@@ -89,52 +98,35 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         CredentialType credentialType,
         uint256 expirationTimestamp
     );
-    event CredentialRevoked(
-        uint256 indexed tokenId,
-        address indexed issuer,
-        address indexed holder,
-        string reason
-    );
-    event BatchCredentialsIssued(
-        address indexed issuer,
-        uint256 count,
-        uint256[] tokenIds
-    );
+    event CredentialRevoked(uint256 indexed tokenId, address indexed issuer, address indexed holder, string reason);
+    event BatchCredentialsIssued(address indexed issuer, uint256 count, uint256[] tokenIds);
 
     /**
      * @notice Initializes the CrediChainCore V2 contract
      * @param _soulBoundNFT The address of the SoulBoundNFT contract
      * @param _identityManager The address of the IdentityManager contract
      */
-    constructor(
-        address _soulBoundNFT,
-        address _identityManager
-    ) {
+    constructor(address _soulBoundNFT, address _identityManager) {
         if (_soulBoundNFT == address(0) || _identityManager == address(0)) {
             revert CrediChainCore__InvalidInput();
         }
-        
+
         soulBoundNFT = SoulBoundNFT(_soulBoundNFT);
         identityManager = IdentityManager(_identityManager);
-        
+
         // Set up roles
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_ROLE, msg.sender);
         _grantRole(INSTITUTION_VERIFIER_ROLE, msg.sender);
         _grantRole(EMERGENCY_ROLE, msg.sender);
-        
+
         // Verify the deployer as the first institution
-        _verifyInstitution(
-            msg.sender,
-            "Credichain Platform",
-            "https://credichain.org",
-            InstitutionCategory.OTHER
-        );
+        _verifyInstitution(msg.sender, "Credichain Platform", "https://credichain.org", InstitutionCategory.OTHER);
     }
 
     /**
      * @notice Modifier to ensure caller is a verified institution with sufficient reputation
-    */
+     */
     modifier onlyVerifiedInstitution() {
         Institution memory inst = institutions[msg.sender];
         if (!inst.isVerified || !identityManager.getIsVerified(msg.sender)) {
@@ -148,7 +140,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
 
     /**
      * @notice Modifier to ensure target user is verified
-    */
+     */
     modifier onlyVerifiedUser(address user) {
         if (!identityManager.getIsVerified(user)) {
             revert CrediChainCore__OnlyVerifiedUsers();
@@ -177,7 +169,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
 
     /**
      * @notice Internal function to verify institution
-    */
+     */
     function _verifyInstitution(
         address institution,
         string memory name,
@@ -194,30 +186,26 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
             website: website,
             category: category
         });
-        
+
         verifiedInstitutionsList.push(institution);
         totalInstitutions++;
-        
+
         emit InstitutionVerified(institution, name, category, block.timestamp);
     }
 
     /**
      * @notice Removes institution verification
      * @param institution Address of the institution to remove
-    */
-    function removeInstitution(address institution) 
-        external 
-        onlyRole(ADMIN_ROLE) 
-        whenNotPaused 
-    {
+     */
+    function removeInstitution(address institution) external onlyRole(ADMIN_ROLE) whenNotPaused {
         if (!institutions[institution].isVerified) {
             revert CrediChainCore__InstitutionNotFound();
         }
-        
+
         institutions[institution].isVerified = false;
         _removeFromInstitutionsList(institution);
         totalInstitutions--;
-        
+
         emit InstitutionRemoved(institution, block.timestamp);
     }
 
@@ -235,16 +223,9 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         CredentialType credentialType,
         uint256 expirationTimestamp,
         string memory ipfsHash
-    )
-        external
-        onlyVerifiedInstitution
-        onlyVerifiedUser(to)
-        whenNotPaused
-        nonReentrant
-        returns (uint256 tokenId)
-    {
+    ) external onlyVerifiedInstitution onlyVerifiedUser(to) whenNotPaused nonReentrant returns (uint256 tokenId) {
         tokenId = soulBoundNFT.safeMint(msg.sender, to, uri);
-        
+
         credentialMetadata[tokenId] = CredentialMetadata({
             issuer: msg.sender,
             issuanceTimestamp: block.timestamp,
@@ -253,23 +234,17 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
             isActive: true,
             ipfsHash: ipfsHash
         });
-        
+
         userCredentials[to].push(tokenId);
         credentialTypeCount[credentialType]++;
         totalCredentialsIssued++;
-        
+
         // Update institution stats
         institutions[msg.sender].credentialsIssued++;
         _updateReputation(msg.sender, true);
-        
-        emit CredentialIssued(
-            to, 
-            tokenId, 
-            msg.sender, 
-            credentialType, 
-            expirationTimestamp
-        );
-        
+
+        emit CredentialIssued(to, tokenId, msg.sender, credentialType, expirationTimestamp);
+
         return tokenId;
     }
 
@@ -287,40 +262,33 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         CredentialType[] calldata credentialTypes,
         uint256[] calldata expirationTimestamps,
         string[] calldata ipfsHashes
-    )
-        external
-        onlyVerifiedInstitution
-        whenNotPaused
-        nonReentrant
-        returns (uint256[] memory tokenIds)
-    {
+    ) external onlyVerifiedInstitution whenNotPaused nonReentrant returns (uint256[] memory tokenIds) {
         uint256 length = recipients.length;
         if (length > MAX_BATCH_SIZE || length == 0) {
             revert CrediChainCore__BatchSizeLimitExceeded();
         }
-        if (length != uris.length || length != credentialTypes.length || 
-            length != expirationTimestamps.length || length != ipfsHashes.length) {
+        if (
+            length != uris.length || length != credentialTypes.length || length != expirationTimestamps.length
+                || length != ipfsHashes.length
+        ) {
             revert CrediChainCore__InvalidInput();
         }
 
         tokenIds = new uint256[](length);
-        
+
         for (uint256 i = 0; i < length;) {
             if (!identityManager.getIsVerified(recipients[i])) {
                 revert CrediChainCore__OnlyVerifiedUsers();
             }
-            
-            tokenIds[i] = issueCredential(
-                recipients[i],
-                uris[i],
-                credentialTypes[i],
-                expirationTimestamps[i],
-                ipfsHashes[i]
-            );
-            
-            unchecked { ++i; }
+
+            tokenIds[i] =
+                this.issueCredential(recipients[i], uris[i], credentialTypes[i], expirationTimestamps[i], ipfsHashes[i]);
+
+            unchecked {
+                ++i;
+            }
         }
-        
+
         emit BatchCredentialsIssued(msg.sender, length, tokenIds);
         return tokenIds;
     }
@@ -330,11 +298,11 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param tokenId ID of the credential to revoke
      * @param reason Reason for revocation
      */
-    function revokeCredential(uint256 tokenId, string calldata reason) 
-        external 
-        onlyVerifiedInstitution 
-        whenNotPaused 
-        nonReentrant 
+    function revokeCredential(uint256 tokenId, string calldata reason)
+        external
+        onlyVerifiedInstitution
+        whenNotPaused
+        nonReentrant
     {
         CredentialMetadata storage metadata = credentialMetadata[tokenId];
         if (metadata.issuer != msg.sender) {
@@ -343,17 +311,17 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
         if (!metadata.isActive) {
             revert CrediChainCore__InvalidInput();
         }
-        
+
         address holder = soulBoundNFT.ownerOf(tokenId);
         soulBoundNFT.revoke(msg.sender, tokenId);
-        
+
         metadata.isActive = false;
         institutions[msg.sender].credentialsRevoked++;
         _updateReputation(msg.sender, false);
-        
+
         // Remove from user's credential list
         _removeFromUserCredentials(holder, tokenId);
-        
+
         emit CredentialRevoked(tokenId, msg.sender, holder, reason);
     }
 
@@ -364,7 +332,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
      */
     function _updateReputation(address institution, bool positive) internal {
         Institution storage inst = institutions[institution];
-        
+
         if (positive) {
             inst.reputation += 10; // Increase reputation for issuing credentials
         } else {
@@ -372,7 +340,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
                 inst.reputation -= 20; // Decrease reputation for revoking credentials
             }
         }
-        
+
         emit InstitutionReputationUpdated(institution, inst.reputation);
     }
 
@@ -383,10 +351,10 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
      */
     function isCredentialValid(uint256 tokenId) external view returns (bool isValid) {
         CredentialMetadata memory metadata = credentialMetadata[tokenId];
-        
+
         if (!metadata.isActive) return false;
         if (metadata.expirationTimestamp == 0) return true; // No expiration
-        
+
         return block.timestamp <= metadata.expirationTimestamp;
     }
 
@@ -395,11 +363,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param tokenId ID of the credential
      * @return metadata Full credential metadata
      */
-    function getCredentialDetails(uint256 tokenId) 
-        external 
-        view 
-        returns (CredentialMetadata memory metadata) 
-    {
+    function getCredentialDetails(uint256 tokenId) external view returns (CredentialMetadata memory metadata) {
         return credentialMetadata[tokenId];
     }
 
@@ -408,11 +372,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param institution Address of the institution
      * @return institutionData Full institution data
      */
-    function getInstitutionStats(address institution) 
-        external 
-        view 
-        returns (Institution memory institutionData) 
-    {
+    function getInstitutionStats(address institution) external view returns (Institution memory institutionData) {
         return institutions[institution];
     }
 
@@ -420,11 +380,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
      * @notice Gets all verified institutions
      * @return institutionAddresses Array of verified institution addresses
      */
-    function getVerifiedInstitutions() 
-        external 
-        view 
-        returns (address[] memory institutionAddresses) 
-    {
+    function getVerifiedInstitutions() external view returns (address[] memory institutionAddresses) {
         return verifiedInstitutionsList;
     }
 
@@ -433,11 +389,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param credentialType Type of credentials to count
      * @return count Number of credentials of this type
      */
-    function getCredentialCountByType(CredentialType credentialType) 
-        external 
-        view 
-        returns (uint256 count) 
-    {
+    function getCredentialCountByType(CredentialType credentialType) external view returns (uint256 count) {
         return credentialTypeCount[credentialType];
     }
 
@@ -445,11 +397,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
      * @notice Gets platform statistics
      * @return stats Array containing [totalCredentials, totalInstitutions, totalActiveCredentials]
      */
-    function getPlatformStats() 
-        external 
-        view 
-        returns (uint256[3] memory stats) 
-    {
+    function getPlatformStats() external view returns (uint256[3] memory stats) {
         uint256 activeCredentials = totalCredentialsIssued;
         // In a real implementation, you'd iterate through all credentials to count active ones
         return [totalCredentialsIssued, totalInstitutions, activeCredentials];
@@ -494,6 +442,7 @@ contract CrediChainCoreV2 is AccessControl, ReentrancyGuard, Pausable {
                 break;
             }
         }
+    }
 
     // Legacy compatibility functions
     function getCredentialIssuer(uint256 tokenId) external view returns (address) {

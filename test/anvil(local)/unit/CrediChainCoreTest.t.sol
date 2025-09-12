@@ -23,10 +23,7 @@ contract CrediChainCoreTest is Test {
         vm.startPrank(owner);
         soulBoundNFT = new SoulBoundNFT(owner);
         identitymanager = new IdentityManager(address(0), "", "");
-        credCore = new CrediChainCore(
-            address(soulBoundNFT),
-            address(identitymanager)
-        );
+        credCore = new CrediChainCore(address(soulBoundNFT), address(identitymanager));
         // Call setCrediChainCore to set the CrediChainCore address as owner
         soulBoundNFT.setCrediChainCore(address(credCore));
         // Call setIdentityManager to set the IdentityManager address as owner
@@ -43,15 +40,10 @@ contract CrediChainCoreTest is Test {
     function testIssueCredential() public {
         // Issue credential to a student as a fully verified institution
         vm.prank(verifiedInstitution);
-        uint256 tokenId = credCore.issueCredential(
-            student,
-            "https://example.com"
-        );
+        uint256 tokenId = credCore.issueCredential(student, "https://example.com");
         // Assertions
         assertEq(credCore.getCredentialIssuer(tokenId), verifiedInstitution);
-        SoulBoundNFT.NFTData[] memory nft = credCore.getStudentCredentials(
-            student
-        );
+        SoulBoundNFT.NFTData[] memory nft = credCore.getStudentCredentials(student);
         for (uint256 i = 0; i < nft.length; i++) {
             assertEq(nft[i].tokenId, tokenId);
         }
@@ -60,10 +52,7 @@ contract CrediChainCoreTest is Test {
     function testRevokeCredential() public {
         // Issue credential to a student as a fully verified institution
         vm.startPrank(verifiedInstitution);
-        uint256 tokenId = credCore.issueCredential(
-            student,
-            "https://example.com"
-        );
+        uint256 tokenId = credCore.issueCredential(student, "https://example.com");
         // Revoke the credential
         credCore.revokeCredential(tokenId);
         vm.stopPrank();
