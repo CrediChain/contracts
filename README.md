@@ -127,6 +127,16 @@ forge test --match-contract CrediChainCoreV2Test
 forge test -vvv
 ```
 
+### Gas Analysis
+
+```bash
+# Generate gas snapshots
+forge snapshot
+
+# Compare gas usage
+forge snapshot --diff .gas-snapshot
+```
+
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
