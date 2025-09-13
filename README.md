@@ -110,6 +110,23 @@ forge build
 # Generate documentation
 forge doc
 ```
+
+### Testing
+
+```bash
+# Run all tests
+forge test
+
+# Run tests with gas reporting
+forge test --gas-report
+
+# Run specific test file
+forge test --match-contract CrediChainCoreV2Test
+
+# Run with verbosity for debugging
+forge test -vvv
+```
+
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
