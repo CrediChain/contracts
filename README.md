@@ -110,6 +110,48 @@ forge build
 # Generate documentation
 forge doc
 ```
+
+### Testing
+
+```bash
+# Run all tests
+forge test
+
+# Run tests with gas reporting
+forge test --gas-report
+
+# Run specific test file
+forge test --match-contract CrediChainCoreV2Test
+
+# Run with verbosity for debugging
+forge test -vvv
+```
+
+### Gas Analysis
+
+```bash
+# Generate gas snapshots
+forge snapshot
+
+# Compare gas usage
+forge snapshot --diff .gas-snapshot
+```
+
+## 🔧 Development Workflow
+
+### Local Development
+
+```bash
+# Start local Anvil node
+anvil
+
+# Deploy contracts to local network
+forge script script/DeployV2.s.sol:DeployV2Script --rpc-url http://localhost:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
+
+# Interact with contracts using Cast
+cast call $CREDICHAIN_CORE "totalCredentialsIssued()(uint256)" --rpc-url http://localhost:8545
+```
+
 -----------------------------------------------------------------------------------------
 
 ## Project Overview
