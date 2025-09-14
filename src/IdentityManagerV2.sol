@@ -73,5 +73,6 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     error InvalidExpirationTime();
     error BatchSizeLimitExceeded();
     error ArrayLengthMismatch();
+    error ZeroAddress();
 
 }
