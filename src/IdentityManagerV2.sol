@@ -44,4 +44,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         uint256 nullifierHash;
         string metadata; // Additional user metadata (IPFS hash)
     }
+
+        struct VerificationStats {
+        uint256 totalVerifications;
+        uint256 deviceVerifications;
+        uint256 orbVerifications;
+        uint256 activeVerifications;
+        uint256 expiredVerifications;
+    }
 }
