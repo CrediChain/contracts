@@ -14,4 +14,6 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
  * Includes batch operations, verification levels, expiration support, and comprehensive admin controls.
  * @dev This contract manages identity verification with enhanced security and administrative features.
  */
-contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {}
+contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
+    using ByteHasher for bytes;
+}
