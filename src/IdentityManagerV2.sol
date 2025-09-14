@@ -7,4 +7,4 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
-contract IdentityManagerV2 {}
+contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {}
