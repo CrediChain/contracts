@@ -75,4 +75,14 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     error ArrayLengthMismatch();
     error ZeroAddress();
     error InvalidSignal();
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                             STATE VARIABLES                            ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /// @dev The World ID instance that will be used for verifying proofs
+    IWorldID internal immutable worldId;
+
+    /// @dev The contract's external nullifier hash
+    uint256 internal immutable externalNullifier;
 }
