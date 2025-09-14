@@ -16,4 +16,9 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
  */
 contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     using ByteHasher for bytes;
+
+        ///////////////////////////////////////////////////////////////////////////////
+    ///                                  ROLES                                 ///
+    ///////////////////////////////////////////////////////////////////////////////
+
 }
