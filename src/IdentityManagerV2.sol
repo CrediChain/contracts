@@ -66,5 +66,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                                  ERRORS                                ///
     ///////////////////////////////////////////////////////////////////////////////
     error DuplicateNullifier(uint256 nullifierHash);
+    error UserAlreadyVerified(address user);
+    error UserNotVerified(address user);
+    error VerificationExpired(address user);
+    error InvalidUserType();
 
 }
