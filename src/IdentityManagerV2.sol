@@ -75,4 +75,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     error ArrayLengthMismatch();
     error ZeroAddress();
     error InvalidSignal();
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                             STATE VARIABLES                            ///
+    ///////////////////////////////////////////////////////////////////////////////
+
 }
