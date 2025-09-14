@@ -65,5 +65,6 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///////////////////////////////////////////////////////////////////////////////
     ///                                  ERRORS                                ///
     ///////////////////////////////////////////////////////////////////////////////
+    error DuplicateNullifier(uint256 nullifierHash);
 
 }
