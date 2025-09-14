@@ -29,4 +29,6 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///////////////////////////////////////////////////////////////////////////////
 
     enum VerificationLevel { NONE, DEVICE, ORB }
+    enum UserType { STUDENT, INSTITUTION, VERIFIER, ADMIN }
+
 }
