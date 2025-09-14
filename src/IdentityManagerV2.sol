@@ -24,12 +24,21 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     bytes32 public constant VERIFIER_ROLE = keccak256("VERIFIER_ROLE");
     bytes32 public constant EMERGENCY_ROLE = keccak256("EMERGENCY_ROLE");
 
-        ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
     ///                                  ENUMS                                 ///
     ///////////////////////////////////////////////////////////////////////////////
 
-    enum VerificationLevel { NONE, DEVICE, ORB }
-    enum UserType { STUDENT, INSTITUTION, VERIFIER, ADMIN }
+    enum VerificationLevel {
+        NONE,
+        DEVICE,
+        ORB
+    }
+    enum UserType {
+        STUDENT,
+        INSTITUTION,
+        VERIFIER,
+        ADMIN
+    }
 
     ///////////////////////////////////////////////////////////////////////////////
     ///                                STRUCTS                                 ///
@@ -45,7 +54,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         string metadata; // Additional user metadata (IPFS hash)
     }
 
-        struct VerificationStats {
+    struct VerificationStats {
         uint256 totalVerifications;
         uint256 deviceVerifications;
         uint256 orbVerifications;
