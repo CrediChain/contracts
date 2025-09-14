@@ -70,5 +70,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     error UserNotVerified(address user);
     error VerificationExpired(address user);
     error InvalidUserType();
+    error InvalidExpirationTime();
+    error BatchSizeLimitExceeded();
 
 }
