@@ -80,4 +80,6 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                             STATE VARIABLES                            ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    /// @dev The World ID instance that will be used for verifying proofs
+    IWorldID internal immutable worldId;
 }
