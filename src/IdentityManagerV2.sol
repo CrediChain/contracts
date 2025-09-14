@@ -31,4 +31,17 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     enum VerificationLevel { NONE, DEVICE, ORB }
     enum UserType { STUDENT, INSTITUTION, VERIFIER, ADMIN }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                                STRUCTS                                 ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    struct UserVerification {
+        bool isVerified;
+        VerificationLevel level;
+        UserType userType;
+        uint256 verificationTimestamp;
+        uint256 expirationTimestamp; // 0 for no expiration
+        uint256 nullifierHash;
+        string metadata; // Additional user metadata (IPFS hash)
+    }
 }
