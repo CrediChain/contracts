@@ -97,7 +97,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
 
     /// @dev Platform statistics
     VerificationStats public stats;
-    
+
     /// @dev List of all verified users for enumeration
     address[] public verifiedUsers;
 
@@ -116,5 +116,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
 
     /// @dev Mapping to track user positions in usersByType arrays for efficient removal
     mapping(UserType => mapping(address => uint256)) internal userPositions;
+
+    mapping(address => uint256) internal verifiedUserPositions;
 
 }
