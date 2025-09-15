@@ -86,13 +86,13 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     /// @dev The contract's external nullifier hash
     uint256 internal immutable externalNullifier;
 
-        /// @dev The World ID group ID (always 1 for orb verification, can be different for device)
+    /// @dev The World ID group ID (always 1 for orb verification, can be different for device)
     uint256 internal immutable groupId;
 
     /// @dev Maximum batch size for operations
     uint256 public constant MAX_BATCH_SIZE = 100;
 
-        /// @dev Default verification expiration time (1 year in seconds)
+    /// @dev Default verification expiration time (1 year in seconds)
     uint256 public constant DEFAULT_EXPIRATION = 365 days;
 
     /// @dev List of all verified users for enumeration
