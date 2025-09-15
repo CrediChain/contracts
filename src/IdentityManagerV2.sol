@@ -132,29 +132,13 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         uint256 expirationTimestamp
     );
 
-        event UserVerificationRevoked(
-        address indexed user,
-        address indexed revoker,
-        string reason
-    );
+    event UserVerificationRevoked(address indexed user, address indexed revoker, string reason);
 
-    event UserTypeUpdated(
-        address indexed user,
-        UserType oldType,
-        UserType newType
-    );
+    event UserTypeUpdated(address indexed user, UserType oldType, UserType newType);
 
-    event VerificationRenewed(
-        address indexed user,
-        uint256 newExpirationTimestamp
-    );
+    event VerificationRenewed(address indexed user, uint256 newExpirationTimestamp);
 
-    event BatchVerificationCompleted(
-        address indexed admin,
-        uint256 count,
-        UserType userType
-    );
+    event BatchVerificationCompleted(address indexed admin, uint256 count, UserType userType);
 
     event VerificationExpire(address indexed user);
-
 }
