@@ -148,4 +148,10 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         address indexed user,
         uint256 newExpirationTimestamp
     );
+
+    event BatchVerificationCompleted(
+        address indexed admin,
+        uint256 count,
+        UserType userType
+    );
 }
