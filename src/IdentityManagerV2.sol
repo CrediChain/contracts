@@ -146,4 +146,8 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                               MODIFIERS                                ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    modifier validAddress(address _address) {
+        if (_address == address(0)) revert ZeroAddress();
+        _;
+    }
 }
