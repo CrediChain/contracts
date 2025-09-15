@@ -108,4 +108,6 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     /// @dev Mapping from user address to their verification data
        mapping(address => UserVerification) internal userVerifications;
 
+    mapping(UserType => address[]) internal usersByType;
+
 }
