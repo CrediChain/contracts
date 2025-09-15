@@ -95,5 +95,6 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         /// @dev Default verification expiration time (1 year in seconds)
     uint256 public constant DEFAULT_EXPIRATION = 365 days;
 
-
+    /// @dev List of all verified users for enumeration
+    address[] public verifiedUsers;
 }
