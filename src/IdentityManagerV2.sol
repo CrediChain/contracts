@@ -95,6 +95,28 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     /// @dev Default verification expiration time (1 year in seconds)
     uint256 public constant DEFAULT_EXPIRATION = 365 days;
 
+    /// @dev Platform statistics
+    VerificationStats public stats;
+
     /// @dev List of all verified users for enumeration
     address[] public verifiedUsers;
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                             MAPPINGS                                    ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /// @dev Whether a nullifier hash has been used already
+    mapping(uint256 => bool) internal nullifierHashes;
+
+    /// @dev Mapping from user address to their verification data
+    mapping(address => UserVerification) internal userVerifications;
+
+    /// @dev Mapping from user type to list of verified addresses
+    mapping(UserType => address[]) internal usersByType;
+
+    /// @dev Mapping to track user positions in usersByType arrays for efficient removal
+    mapping(UserType => mapping(address => uint256)) internal userPositions;
+
+    /// @dev Mapping to track user positions in verifiedUsers array for efficient removal
+    mapping(address => uint256) internal verifiedUserPositions;
 }
