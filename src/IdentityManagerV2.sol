@@ -155,4 +155,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         if (!isUserVerified(user)) revert UserNotVerified(user);
         _;
     }
+
+    modifier notExpired(address user) {
+        if (isVerificationExpired(user)) revert VerificationExpired(user);
+        _;
+    }
 }
