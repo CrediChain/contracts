@@ -119,4 +119,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
 
     /// @dev Mapping to track user positions in verifiedUsers array for efficient removal
     mapping(address => uint256) internal verifiedUserPositions;
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                                 EVENTS                                 ///
+    ///////////////////////////////////////////////////////////////////////////////
+
 }
