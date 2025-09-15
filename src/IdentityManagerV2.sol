@@ -105,6 +105,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     /// @dev Whether a nullifier hash has been used already
    mapping(uint256 => bool) internal nullifierHashes;
 
+    /// @dev Mapping from user address to their verification data
        mapping(address => UserVerification) internal userVerifications;
 
 }
