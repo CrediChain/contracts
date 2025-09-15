@@ -166,7 +166,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address to check
      * @return Whether the user is verified and not expired
      */
-        function isUserVerified(address user) public view returns (bool) {
+    function isUserVerified(address user) public view returns (bool) {
         UserVerification memory verification = userVerifications[user];
         if (!verification.isVerified) return false;
         if (verification.expirationTimestamp == 0) return true;
