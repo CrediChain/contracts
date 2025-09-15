@@ -97,4 +97,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
 
     /// @dev List of all verified users for enumeration
     address[] public verifiedUsers;
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                             MAPPINGS                                    ///
+    ///////////////////////////////////////////////////////////////////////////////
+
 }
