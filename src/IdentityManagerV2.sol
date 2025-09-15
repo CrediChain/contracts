@@ -137,4 +137,10 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         address indexed revoker,
         string reason
     );
+
+    event UserTypeUpdated(
+        address indexed user,
+        UserType oldType,
+        UserType newType
+    );
 }
