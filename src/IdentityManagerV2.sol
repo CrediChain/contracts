@@ -162,9 +162,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     }
 
     /**
-     * @notice Checks if a user is verified and not expired
+     * @notice Checks if a user is verified (internal)
      * @param user Address to check
-     * @return isVerified Whether the user is currently verified
+     * @return Whether the user is verified and not expired
      */
         function isUserVerified(address user) public view returns (bool) {
         UserVerification memory verification = userVerifications[user];
@@ -173,6 +173,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         return block.timestamp <= verification.expirationTimestamp;
     }
 
+    /**
+     * @notice Checks if a user's verification has expired
+     * @param user Address to check
+     * @return Whether the verification has expired
+     */
     function isVerificationExpired(address user) public view returns (bool) {
         UserVerification memory verification = userVerifications[user];
         if (!verification.isVerified) return false;
