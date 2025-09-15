@@ -85,4 +85,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
 
     /// @dev The contract's external nullifier hash
     uint256 internal immutable externalNullifier;
+
+        /// @dev The World ID group ID (always 1 for orb verification, can be different for device)
+    uint256 internal immutable groupId;
 }
