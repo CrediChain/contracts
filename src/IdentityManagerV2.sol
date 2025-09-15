@@ -124,4 +124,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                                 EVENTS                                 ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    event UserVerified(
+        address indexed user,
+        uint256 indexed nullifierHash,
+        VerificationLevel level,
+        UserType userType,
+        uint256 expirationTimestamp
+    );
 }
