@@ -111,6 +111,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     /// @dev Mapping from user type to list of verified addresses
     mapping(UserType => address[]) internal usersByType;
 
+    /// @dev Mapping to track user positions in usersByType arrays for efficient removal
     mapping(UserType => mapping(address => uint256)) internal userPositions;
 
 }
