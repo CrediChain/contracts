@@ -102,4 +102,5 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                             MAPPINGS                                    ///
     ///////////////////////////////////////////////////////////////////////////////
 
+   mapping(uint256 => bool) internal nullifierHashes;
 }
