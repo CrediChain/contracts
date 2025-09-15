@@ -160,4 +160,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         if (isVerificationExpired(user)) revert VerificationExpired(user);
         _;
     }
+
+        function isUserVerified(address user) public view returns (bool) {
+        UserVerification memory verification = userVerifications[user];
+        if (!verification.isVerified) return false;
+        if (verification.expirationTimestamp == 0) return true;
+        return block.timestamp <= verification.expirationTimestamp;
+    }
 }
