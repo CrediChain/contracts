@@ -150,4 +150,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         if (_address == address(0)) revert ZeroAddress();
         _;
     }
+
+    modifier onlyVerified(address user) {
+        if (!isUserVerified(user)) revert UserNotVerified(user);
+        _;
+    }
 }
