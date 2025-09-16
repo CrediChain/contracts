@@ -141,4 +141,47 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     event BatchVerificationCompleted(address indexed admin, uint256 count, UserType userType);
 
     event VerificationExpire(address indexed user);
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                               MODIFIERS                                ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    modifier validAddress(address _address) {
+        if (_address == address(0)) revert ZeroAddress();
+        _;
+    }
+
+    modifier onlyVerified(address user) {
+        if (!isUserVerified(user)) revert UserNotVerified(user);
+        _;
+    }
+
+    modifier notExpired(address user) {
+        if (isVerificationExpired(user)) revert VerificationExpired(user);
+        _;
+    }
+
+    /**
+     * @notice Checks if a user is verified (internal)
+     * @param user Address to check
+     * @return Whether the user is verified and not expired
+     */
+    function isUserVerified(address user) public view returns (bool) {
+        UserVerification memory verification = userVerifications[user];
+        if (!verification.isVerified) return false;
+        if (verification.expirationTimestamp == 0) return true;
+        return block.timestamp <= verification.expirationTimestamp;
+    }
+
+    /**
+     * @notice Checks if a user's verification has expired
+     * @param user Address to check
+     * @return Whether the verification has expired
+     */
+    function isVerificationExpired(address user) public view returns (bool) {
+        UserVerification memory verification = userVerifications[user];
+        if (!verification.isVerified) return false;
+        if (verification.expirationTimestamp == 0) return false;
+        return block.timestamp > verification.expirationTimestamp;
+    }
 }
