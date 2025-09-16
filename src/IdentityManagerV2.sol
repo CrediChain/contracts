@@ -172,17 +172,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param _actionId The World ID action identifier
      * @param _groupId The World ID group identifier (1 for orb, others for device)
      */
-    constructor(
-        address _worldId,
-        string memory _appId,
-        string memory _actionId,
-        uint256 _groupId
-    ) validAddress(_worldId) {
+    constructor(address _worldId, string memory _appId, string memory _actionId, uint256 _groupId)
+        validAddress(_worldId)
+    {
         worldId = IWorldID(_worldId);
         groupId = _groupId;
-        externalNullifier = abi
-            .encodePacked(abi.encodePacked(_appId).hashToField(), _actionId)
-            .hashToField();
+        externalNullifier = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _actionId).hashToField();
 
         // Set up roles
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -228,12 +223,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
 
         // Verify World ID proof
         worldId.verifyProof(
-            root,
-            groupId,
-            abi.encodePacked(signal).hashToField(),
-            nullifierHash,
-            externalNullifier,
-            proof
+            root, groupId, abi.encodePacked(signal).hashToField(), nullifierHash, externalNullifier, proof
         );
 
         // Record nullifier usage
@@ -243,9 +233,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         VerificationLevel level = groupId == 1 ? VerificationLevel.ORB : VerificationLevel.DEVICE;
 
         // Set expiration time
-        uint256 finalExpiration = expirationTimestamp == 0 
-            ? block.timestamp + DEFAULT_EXPIRATION 
-            : expirationTimestamp;
+        uint256 finalExpiration = expirationTimestamp == 0 ? block.timestamp + DEFAULT_EXPIRATION : expirationTimestamp;
 
         // Store verification
         _storeVerification(signal, userType, level, finalExpiration, nullifierHash, "");
