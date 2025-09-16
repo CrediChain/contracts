@@ -198,6 +198,51 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                          VERIFICATION FUNCTIONS                        ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    function verifyAndExecute(
+        address signal,
+        uint256 root,
+        uint256 nullifierHash,
+        uint256[8] calldata proof,
+        UserType userType,
+        uint256 expirationTimestamp
+    ) external whenNotPaused nonReentrant validAddress(signal) {
+        // Validate inputs
+        if (nullifierHashes[nullifierHash]) {
+            revert DuplicateNullifier(nullifierHash);
+        }
+        if (userVerifications[signal].isVerified) {
+            revert UserAlreadyVerified(signal);
+        }
+        if (expirationTimestamp != 0 && expirationTimestamp <= block.timestamp) {
+            revert InvalidExpirationTime();
+        }
+
+        // Verify World ID proof
+        worldId.verifyProof(
+            root,
+            groupId,
+            abi.encodePacked(signal).hashToField(),
+            nullifierHash,
+            externalNullifier,
+            proof
+        );
+
+        // Record nullifier usage
+        nullifierHashes[nullifierHash] = true;
+
+        // Determine verification level based on group ID
+        VerificationLevel level = groupId == 1 ? VerificationLevel.ORB : VerificationLevel.DEVICE;
+
+        // Set expiration time
+        uint256 finalExpiration = expirationTimestamp == 0 
+            ? block.timestamp + DEFAULT_EXPIRATION 
+            : expirationTimestamp;
+
+        // Store verification
+        _storeVerification(signal, userType, level, finalExpiration, nullifierHash, "");
+
+        emit UserVerified(signal, nullifierHash, level, userType, finalExpiration);
+    }
 
     /**
      * @notice Checks if a user is verified (internal)
