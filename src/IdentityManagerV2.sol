@@ -165,6 +165,13 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                              CONSTRUCTOR                               ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @notice Initializes the IdentityManagerV2 contract
+     * @param _worldId The WorldID router address for proof verification
+     * @param _appId The World ID application identifier
+     * @param _actionId The World ID action identifier
+     * @param _groupId The World ID group identifier (1 for orb, others for device)
+     */
     constructor(
         address _worldId,
         string memory _appId,
@@ -186,7 +193,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         // Verify the deployer as admin
         _directVerify(msg.sender, UserType.ADMIN, VerificationLevel.ORB, 0);
     }
-    
+
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
