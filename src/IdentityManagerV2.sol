@@ -198,6 +198,15 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                          VERIFICATION FUNCTIONS                        ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @notice Verifies a user with World ID proof
+     * @param signal User's wallet address as signal
+     * @param root Merkle tree root from World ID
+     * @param nullifierHash Unique nullifier to prevent double verification
+     * @param proof Zero-knowledge proof from World ID
+     * @param userType Type of user being verified
+     * @param expirationTimestamp When verification expires (0 for no expiration)
+     */
     function verifyAndExecute(
         address signal,
         uint256 root,
