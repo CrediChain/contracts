@@ -161,6 +161,10 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         _;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                              CONSTRUCTOR                               ///
+    ///////////////////////////////////////////////////////////////////////////////
+
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
