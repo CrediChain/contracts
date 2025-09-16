@@ -194,6 +194,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         _directVerify(msg.sender, UserType.ADMIN, VerificationLevel.ORB, 0);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                          VERIFICATION FUNCTIONS                        ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
