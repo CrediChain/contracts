@@ -172,17 +172,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param _actionId The World ID action identifier
      * @param _groupId The World ID group identifier (1 for orb, others for device)
      */
-    constructor(
-        address _worldId,
-        string memory _appId,
-        string memory _actionId,
-        uint256 _groupId
-    ) validAddress(_worldId) {
+    constructor(address _worldId, string memory _appId, string memory _actionId, uint256 _groupId)
+        validAddress(_worldId)
+    {
         worldId = IWorldID(_worldId);
         groupId = _groupId;
-        externalNullifier = abi
-            .encodePacked(abi.encodePacked(_appId).hashToField(), _actionId)
-            .hashToField();
+        externalNullifier = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _actionId).hashToField();
 
         // Set up roles
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -192,6 +187,58 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
 
         // Verify the deployer as admin
         _directVerify(msg.sender, UserType.ADMIN, VerificationLevel.ORB, 0);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                          VERIFICATION FUNCTIONS                        ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @notice Verifies a user with World ID proof
+     * @param signal User's wallet address as signal
+     * @param root Merkle tree root from World ID
+     * @param nullifierHash Unique nullifier to prevent double verification
+     * @param proof Zero-knowledge proof from World ID
+     * @param userType Type of user being verified
+     * @param expirationTimestamp When verification expires (0 for no expiration)
+     */
+    function verifyAndExecute(
+        address signal,
+        uint256 root,
+        uint256 nullifierHash,
+        uint256[8] calldata proof,
+        UserType userType,
+        uint256 expirationTimestamp
+    ) external whenNotPaused nonReentrant validAddress(signal) {
+        // Validate inputs
+        if (nullifierHashes[nullifierHash]) {
+            revert DuplicateNullifier(nullifierHash);
+        }
+        if (userVerifications[signal].isVerified) {
+            revert UserAlreadyVerified(signal);
+        }
+        if (expirationTimestamp != 0 && expirationTimestamp <= block.timestamp) {
+            revert InvalidExpirationTime();
+        }
+
+        // Verify World ID proof
+        worldId.verifyProof(
+            root, groupId, abi.encodePacked(signal).hashToField(), nullifierHash, externalNullifier, proof
+        );
+
+        // Record nullifier usage
+        nullifierHashes[nullifierHash] = true;
+
+        // Determine verification level based on group ID
+        VerificationLevel level = groupId == 1 ? VerificationLevel.ORB : VerificationLevel.DEVICE;
+
+        // Set expiration time
+        uint256 finalExpiration = expirationTimestamp == 0 ? block.timestamp + DEFAULT_EXPIRATION : expirationTimestamp;
+
+        // Store verification
+        _storeVerification(signal, userType, level, finalExpiration, nullifierHash, "");
+
+        emit UserVerified(signal, nullifierHash, level, userType, finalExpiration);
     }
 
     /**
