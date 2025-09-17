@@ -241,6 +241,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit UserVerified(signal, nullifierHash, level, userType, finalExpiration);
     }
 
+    /**
+     * @notice Emergency verification function for testing (admin only)
+     * @param user Address to verify
+     * @param userType Type of user
+     * @param level Verification level
+     */
     function emergencyVerify(
         address user,
         UserType userType,
@@ -248,7 +254,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ) external onlyRole(EMERGENCY_ROLE) validAddress(user) {
         _directVerify(user, userType, level, block.timestamp + DEFAULT_EXPIRATION);
     }
-    
+
     /**
      * @notice Batch verify multiple users (admin only)
      * @param users Array of user addresses to verify
