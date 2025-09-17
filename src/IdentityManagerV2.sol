@@ -241,6 +241,45 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit UserVerified(signal, nullifierHash, level, userType, finalExpiration);
     }
 
+    function batchVerifyUsers(
+        address[] calldata users,
+        UserType[] calldata userTypes,
+        VerificationLevel[] calldata levels,
+        uint256[] calldata expirationTimestamps,
+        string[] calldata metadataHashes
+    ) external onlyRole(ADMIN_ROLE) whenNotPaused nonReentrant {
+        uint256 length = users.length;
+        if (length > MAX_BATCH_SIZE) revert BatchSizeLimitExceeded();
+        if (
+            length != userTypes.length ||
+            length != levels.length ||
+            length != expirationTimestamps.length ||
+            length != metadataHashes.length
+        ) {
+            revert ArrayLengthMismatch();
+        }
+
+        for (uint256 i = 0; i < length;) {
+            if (users[i] != address(0) && !userVerifications[users[i]].isVerified) {
+                uint256 expiration = expirationTimestamps[i] == 0
+                    ? block.timestamp + DEFAULT_EXPIRATION
+                    : expirationTimestamps[i];
+
+                _storeVerification(
+                    users[i],
+                    userTypes[i],
+                    levels[i],
+                    expiration,
+                    0, // No nullifier for admin verification
+                    metadataHashes[i]
+                );
+            }
+            unchecked { ++i; }
+        }
+
+        emit BatchVerificationCompleted(msg.sender, length, userTypes[0]);
+    }
+    
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
