@@ -241,6 +241,14 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit UserVerified(signal, nullifierHash, level, userType, finalExpiration);
     }
 
+    /**
+     * @notice Batch verify multiple users (admin only)
+     * @param users Array of user addresses to verify
+     * @param userTypes Array of user types
+     * @param levels Array of verification levels
+     * @param expirationTimestamps Array of expiration timestamps
+     * @param metadataHashes Array of metadata IPFS hashes
+     */
     function batchVerifyUsers(
         address[] calldata users,
         UserType[] calldata userTypes,
@@ -279,7 +287,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
 
         emit BatchVerificationCompleted(msg.sender, length, userTypes[0]);
     }
-    
+
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
