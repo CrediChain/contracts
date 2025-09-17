@@ -247,11 +247,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param userType Type of user
      * @param level Verification level
      */
-    function emergencyVerify(
-        address user,
-        UserType userType,
-        VerificationLevel level
-    ) external onlyRole(EMERGENCY_ROLE) validAddress(user) {
+    function emergencyVerify(address user, UserType userType, VerificationLevel level)
+        external
+        onlyRole(EMERGENCY_ROLE)
+        validAddress(user)
+    {
         _directVerify(user, userType, level, block.timestamp + DEFAULT_EXPIRATION);
     }
 
@@ -273,19 +273,16 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         uint256 length = users.length;
         if (length > MAX_BATCH_SIZE) revert BatchSizeLimitExceeded();
         if (
-            length != userTypes.length ||
-            length != levels.length ||
-            length != expirationTimestamps.length ||
-            length != metadataHashes.length
+            length != userTypes.length || length != levels.length || length != expirationTimestamps.length
+                || length != metadataHashes.length
         ) {
             revert ArrayLengthMismatch();
         }
 
         for (uint256 i = 0; i < length;) {
             if (users[i] != address(0) && !userVerifications[users[i]].isVerified) {
-                uint256 expiration = expirationTimestamps[i] == 0
-                    ? block.timestamp + DEFAULT_EXPIRATION
-                    : expirationTimestamps[i];
+                uint256 expiration =
+                    expirationTimestamps[i] == 0 ? block.timestamp + DEFAULT_EXPIRATION : expirationTimestamps[i];
 
                 _storeVerification(
                     users[i],
@@ -296,7 +293,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
                     metadataHashes[i]
                 );
             }
-            unchecked { ++i; }
+            unchecked {
+                ++i;
+            }
         }
 
         emit BatchVerificationCompleted(msg.sender, length, userTypes[0]);
