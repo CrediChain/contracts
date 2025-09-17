@@ -242,6 +242,66 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     }
 
     /**
+     * @notice Emergency verification function for testing (admin only)
+     * @param user Address to verify
+     * @param userType Type of user
+     * @param level Verification level
+     */
+    function emergencyVerify(address user, UserType userType, VerificationLevel level)
+        external
+        onlyRole(EMERGENCY_ROLE)
+        validAddress(user)
+    {
+        _directVerify(user, userType, level, block.timestamp + DEFAULT_EXPIRATION);
+    }
+
+    /**
+     * @notice Batch verify multiple users (admin only)
+     * @param users Array of user addresses to verify
+     * @param userTypes Array of user types
+     * @param levels Array of verification levels
+     * @param expirationTimestamps Array of expiration timestamps
+     * @param metadataHashes Array of metadata IPFS hashes
+     */
+    function batchVerifyUsers(
+        address[] calldata users,
+        UserType[] calldata userTypes,
+        VerificationLevel[] calldata levels,
+        uint256[] calldata expirationTimestamps,
+        string[] calldata metadataHashes
+    ) external onlyRole(ADMIN_ROLE) whenNotPaused nonReentrant {
+        uint256 length = users.length;
+        if (length > MAX_BATCH_SIZE) revert BatchSizeLimitExceeded();
+        if (
+            length != userTypes.length || length != levels.length || length != expirationTimestamps.length
+                || length != metadataHashes.length
+        ) {
+            revert ArrayLengthMismatch();
+        }
+
+        for (uint256 i = 0; i < length;) {
+            if (users[i] != address(0) && !userVerifications[users[i]].isVerified) {
+                uint256 expiration =
+                    expirationTimestamps[i] == 0 ? block.timestamp + DEFAULT_EXPIRATION : expirationTimestamps[i];
+
+                _storeVerification(
+                    users[i],
+                    userTypes[i],
+                    levels[i],
+                    expiration,
+                    0, // No nullifier for admin verification
+                    metadataHashes[i]
+                );
+            }
+            unchecked {
+                ++i;
+            }
+        }
+
+        emit BatchVerificationCompleted(msg.sender, length, userTypes[0]);
+    }
+
+    /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
      * @return Whether the user is verified and not expired
