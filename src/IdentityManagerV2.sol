@@ -310,10 +310,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address of user to revoke
      * @param reason Reason for revocation
      */
-    function revokeVerification(
-        address user,
-        string calldata reason
-    ) external onlyRole(ADMIN_ROLE) whenNotPaused onlyVerified(user) {
+    function revokeVerification(address user, string calldata reason)
+        external
+        onlyRole(ADMIN_ROLE)
+        whenNotPaused
+        onlyVerified(user)
+    {
         UserVerification storage verification = userVerifications[user];
         UserType userType = verification.userType;
 
@@ -335,10 +337,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address of user
      * @param newUserType New user type
      */
-        function updateUserType(
-        address user,
-        UserType newUserType
-    ) external onlyRole(ADMIN_ROLE) onlyVerified(user) notExpired(user) {
+    function updateUserType(address user, UserType newUserType)
+        external
+        onlyRole(ADMIN_ROLE)
+        onlyVerified(user)
+        notExpired(user)
+    {
         UserVerification storage verification = userVerifications[user];
         UserType oldType = verification.userType;
 
@@ -358,10 +362,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address of user
      * @param newExpirationTimestamp New expiration timestamp
      */
-    function renewVerification(
-        address user,
-        uint256 newExpirationTimestamp
-    ) external onlyRole(VERIFIER_ROLE) onlyVerified(user) {
+    function renewVerification(address user, uint256 newExpirationTimestamp)
+        external
+        onlyRole(VERIFIER_ROLE)
+        onlyVerified(user)
+    {
         if (newExpirationTimestamp <= block.timestamp) {
             revert InvalidExpirationTime();
         }
@@ -374,6 +379,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address to check
      * @return Whether the user is verified and not expired
      */
+
     function isUserVerified(address user) public view returns (bool) {
         UserVerification memory verification = userVerifications[user];
         if (!verification.isVerified) return false;
