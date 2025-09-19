@@ -305,6 +305,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                          MANAGEMENT FUNCTIONS                          ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @notice Revokes a user's verification
+     * @param user Address of user to revoke
+     * @param reason Reason for revocation
+     */
     function revokeVerification(
         address user,
         string calldata reason
