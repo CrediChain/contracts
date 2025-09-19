@@ -353,6 +353,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit UserTypeUpdated(user, oldType, newUserType);
     }
 
+    /**
+     * @notice Renews verification expiration
+     * @param user Address of user
+     * @param newExpirationTimestamp New expiration timestamp
+     */
     function renewVerification(
         address user,
         uint256 newExpirationTimestamp
