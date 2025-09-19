@@ -301,6 +301,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit BatchVerificationCompleted(msg.sender, length, userTypes[0]);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                          MANAGEMENT FUNCTIONS                          ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
