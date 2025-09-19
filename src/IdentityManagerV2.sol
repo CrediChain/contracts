@@ -330,6 +330,24 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit UserVerificationRevoked(user, msg.sender, reason);
     }
 
+        function updateUserType(
+        address user,
+        UserType newUserType
+    ) external onlyRole(ADMIN_ROLE) onlyVerified(user) notExpired(user) {
+        UserVerification storage verification = userVerifications[user];
+        UserType oldType = verification.userType;
+
+        if (oldType == newUserType) return;
+
+        // Update user type lists
+        _removeFromUsersByType(user, oldType);
+        _addToUsersByType(user, newUserType);
+
+        verification.userType = newUserType;
+
+        emit UserTypeUpdated(user, oldType, newUserType);
+    }
+
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
