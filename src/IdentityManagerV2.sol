@@ -305,6 +305,25 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                          MANAGEMENT FUNCTIONS                          ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    function revokeVerification(
+        address user,
+        string calldata reason
+    ) external onlyRole(ADMIN_ROLE) whenNotPaused onlyVerified(user) {
+        UserVerification storage verification = userVerifications[user];
+        UserType userType = verification.userType;
+
+        // Remove from verified users list
+        _removeFromVerifiedUsers(user);
+        _removeFromUsersByType(user, userType);
+
+        // Update stats
+        _updateStatsOnRevoke(verification.level);
+
+        // Clear verification data
+        delete userVerifications[user];
+
+        emit UserVerificationRevoked(user, msg.sender, reason);
+    }
 
     /**
      * @notice Checks if a user is verified (internal)
