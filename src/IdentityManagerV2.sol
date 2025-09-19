@@ -301,11 +301,85 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit BatchVerificationCompleted(msg.sender, length, userTypes[0]);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                          MANAGEMENT FUNCTIONS                          ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @notice Revokes a user's verification
+     * @param user Address of user to revoke
+     * @param reason Reason for revocation
+     */
+    function revokeVerification(address user, string calldata reason)
+        external
+        onlyRole(ADMIN_ROLE)
+        whenNotPaused
+        onlyVerified(user)
+    {
+        UserVerification storage verification = userVerifications[user];
+        UserType userType = verification.userType;
+
+        // Remove from verified users list
+        _removeFromVerifiedUsers(user);
+        _removeFromUsersByType(user, userType);
+
+        // Update stats
+        _updateStatsOnRevoke(verification.level);
+
+        // Clear verification data
+        delete userVerifications[user];
+
+        emit UserVerificationRevoked(user, msg.sender, reason);
+    }
+
+    /**
+     * @notice Updates user type (admin only)
+     * @param user Address of user
+     * @param newUserType New user type
+     */
+    function updateUserType(address user, UserType newUserType)
+        external
+        onlyRole(ADMIN_ROLE)
+        onlyVerified(user)
+        notExpired(user)
+    {
+        UserVerification storage verification = userVerifications[user];
+        UserType oldType = verification.userType;
+
+        if (oldType == newUserType) return;
+
+        // Update user type lists
+        _removeFromUsersByType(user, oldType);
+        _addToUsersByType(user, newUserType);
+
+        verification.userType = newUserType;
+
+        emit UserTypeUpdated(user, oldType, newUserType);
+    }
+
+    /**
+     * @notice Renews verification expiration
+     * @param user Address of user
+     * @param newExpirationTimestamp New expiration timestamp
+     */
+    function renewVerification(address user, uint256 newExpirationTimestamp)
+        external
+        onlyRole(VERIFIER_ROLE)
+        onlyVerified(user)
+    {
+        if (newExpirationTimestamp <= block.timestamp) {
+            revert InvalidExpirationTime();
+        }
+
+        userVerifications[user].expirationTimestamp = newExpirationTimestamp;
+        emit VerificationRenewed(user, newExpirationTimestamp);
+    }
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
      * @return Whether the user is verified and not expired
      */
+
     function isUserVerified(address user) public view returns (bool) {
         UserVerification memory verification = userVerifications[user];
         if (!verification.isVerified) return false;
