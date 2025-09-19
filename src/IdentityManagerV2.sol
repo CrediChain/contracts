@@ -330,6 +330,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit UserVerificationRevoked(user, msg.sender, reason);
     }
 
+    /**
+     * @notice Updates user type (admin only)
+     * @param user Address of user
+     * @param newUserType New user type
+     */
         function updateUserType(
         address user,
         UserType newUserType
