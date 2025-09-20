@@ -375,7 +375,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         emit VerificationRenewed(user, newExpirationTimestamp);
     }
 
-        ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
     ///                              VIEW FUNCTIONS                            ///
     ///////////////////////////////////////////////////////////////////////////////
 
@@ -393,7 +393,6 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address to check
      * @return Whether the user is verified and not expired
      */
-
     function isUserVerified(address user) public view returns (bool) {
         UserVerification memory verification = userVerifications[user];
         if (!verification.isVerified) return false;
@@ -418,11 +417,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address to query
      * @return verification Complete verification data
      */
-        function getUserVerification(address user) 
-        external 
-        view 
-        returns (UserVerification memory verification) 
-    {
+    function getUserVerification(address user) external view returns (UserVerification memory verification) {
         return userVerifications[user];
     }
 
@@ -431,11 +426,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address to query
      * @return level Verification level
      */
-        function getVerificationLevel(address user) 
-        external 
-        view 
-        returns (VerificationLevel level) 
-    {
+    function getVerificationLevel(address user) external view returns (VerificationLevel level) {
         return userVerifications[user].level;
     }
 }
