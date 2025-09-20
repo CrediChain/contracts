@@ -374,12 +374,25 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         userVerifications[user].expirationTimestamp = newExpirationTimestamp;
         emit VerificationRenewed(user, newExpirationTimestamp);
     }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                              VIEW FUNCTIONS                            ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @notice Checks if a user is verified and not expired
+     * @param user Address to check
+     * @return isVerified Whether the user is currently verified
+     */
+    function getIsVerified(address user) external view returns (bool) {
+        return isUserVerified(user);
+    }
+
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
      * @return Whether the user is verified and not expired
      */
-
     function isUserVerified(address user) public view returns (bool) {
         UserVerification memory verification = userVerifications[user];
         if (!verification.isVerified) return false;
@@ -397,5 +410,23 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         if (!verification.isVerified) return false;
         if (verification.expirationTimestamp == 0) return false;
         return block.timestamp > verification.expirationTimestamp;
+    }
+
+    /**
+     * @notice Gets detailed verification information for a user
+     * @param user Address to query
+     * @return verification Complete verification data
+     */
+    function getUserVerification(address user) external view returns (UserVerification memory verification) {
+        return userVerifications[user];
+    }
+
+    /**
+     * @notice Gets verification level for a user
+     * @param user Address to query
+     * @return level Verification level
+     */
+    function getVerificationLevel(address user) external view returns (VerificationLevel level) {
+        return userVerifications[user].level;
     }
 }
