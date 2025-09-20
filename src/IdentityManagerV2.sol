@@ -374,6 +374,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         userVerifications[user].expirationTimestamp = newExpirationTimestamp;
         emit VerificationRenewed(user, newExpirationTimestamp);
     }
+
+        ///////////////////////////////////////////////////////////////////////////////
+    ///                              VIEW FUNCTIONS                            ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+
     /**
      * @notice Checks if a user is verified (internal)
      * @param user Address to check
