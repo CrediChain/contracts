@@ -413,6 +413,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         return block.timestamp > verification.expirationTimestamp;
     }
 
+    /**
+     * @notice Gets detailed verification information for a user
+     * @param user Address to query
+     * @return verification Complete verification data
+     */
         function getUserVerification(address user) 
         external 
         view 
