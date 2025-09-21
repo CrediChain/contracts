@@ -429,4 +429,31 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     function getVerificationLevel(address user) external view returns (VerificationLevel level) {
         return userVerifications[user].level;
     }
+
+    /**
+     * @notice Gets user type
+     * @param user Address to query
+     * @return userType Type of user
+     */
+    function getUserType(address user) external view returns (UserType userType) {
+        return userVerifications[user].userType;
+    }
+
+    /**
+     * @notice Gets all verified users of a specific type
+     * @param userType Type of users to retrieve
+     * @return users Array of user addresses
+     */
+    function getUsersByType(UserType userType) external view returns (address[] memory users) {
+        return usersByType[userType];
+    }
+
+    /**
+     * @notice Gets total count of verified users by type
+     * @param userType Type to count
+     * @return count Number of users
+     */
+    function getUserCountByType(UserType userType) external view returns (uint256 count) {
+        return usersByType[userType].length;
+    }
 }
