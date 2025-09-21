@@ -435,7 +435,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param user Address to query
      * @return userType Type of user
      */
-        function getUserType(address user) external view returns (UserType userType) {
+    function getUserType(address user) external view returns (UserType userType) {
         return userVerifications[user].userType;
     }
 
@@ -444,11 +444,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param userType Type of users to retrieve
      * @return users Array of user addresses
      */
-        function getUsersByType(UserType userType) 
-        external 
-        view 
-        returns (address[] memory users) 
-    {
+    function getUsersByType(UserType userType) external view returns (address[] memory users) {
         return usersByType[userType];
     }
 
@@ -457,11 +453,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
      * @param userType Type to count
      * @return count Number of users
      */
-    function getUserCountByType(UserType userType) 
-        external 
-        view 
-        returns (uint256 count) 
-    {
+    function getUserCountByType(UserType userType) external view returns (uint256 count) {
         return usersByType[userType].length;
     }
 }
