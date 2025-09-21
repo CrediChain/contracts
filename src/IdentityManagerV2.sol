@@ -430,6 +430,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         return userVerifications[user].level;
     }
 
+    /**
+     * @notice Gets user type
+     * @param user Address to query
+     * @return userType Type of user
+     */
         function getUserType(address user) external view returns (UserType userType) {
         return userVerifications[user].userType;
     }
