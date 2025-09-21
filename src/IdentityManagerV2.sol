@@ -452,6 +452,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         return usersByType[userType];
     }
 
+    /**
+     * @notice Gets total count of verified users by type
+     * @param userType Type to count
+     * @return count Number of users
+     */
     function getUserCountByType(UserType userType) 
         external 
         view 
