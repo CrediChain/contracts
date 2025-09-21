@@ -438,4 +438,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         function getUserType(address user) external view returns (UserType userType) {
         return userVerifications[user].userType;
     }
+
+        function getUsersByType(UserType userType) 
+        external 
+        view 
+        returns (address[] memory users) 
+    {
+        return usersByType[userType];
+    }
 }
