@@ -457,6 +457,10 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         return usersByType[userType].length;
     }
 
+    /**
+     * @notice Gets all verified users
+     * @return users Array of all verified user addresses
+     */
     function getAllVerifiedUsers() external view returns (address[] memory users) {
         return verifiedUsers;
     }
