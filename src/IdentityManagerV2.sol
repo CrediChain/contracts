@@ -465,6 +465,10 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         return verifiedUsers;
     }
 
+    /**
+     * @notice Gets platform verification statistics
+     * @return statistics Current platform stats
+     */
     function getVerificationStats() 
         external 
         view 
