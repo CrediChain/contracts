@@ -464,4 +464,21 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     function getAllVerifiedUsers() external view returns (address[] memory users) {
         return verifiedUsers;
     }
+
+    /**
+     * @notice Gets platform verification statistics
+     * @return statistics Current platform stats
+     */
+    function getVerificationStats() external view returns (VerificationStats memory statistics) {
+        return stats;
+    }
+
+    /**
+     * @notice Checks if a nullifier has been used
+     * @param nullifierHash Nullifier to check
+     * @return used Whether the nullifier has been used
+     */
+    function isNullifierUsed(uint256 nullifierHash) external view returns (bool used) {
+        return nullifierHashes[nullifierHash];
+    }
 }
