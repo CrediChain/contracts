@@ -464,4 +464,12 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     function getAllVerifiedUsers() external view returns (address[] memory users) {
         return verifiedUsers;
     }
+
+    function getVerificationStats() 
+        external 
+        view 
+        returns (VerificationStats memory statistics) 
+    {
+        return stats;
+    }
 }
