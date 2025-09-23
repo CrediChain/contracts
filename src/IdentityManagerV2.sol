@@ -518,14 +518,11 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     /**
      * @notice Internal direct verification for admin use
      */
-    function _directVerify(
-        address user,
-        UserType userType,
-        VerificationLevel level,
-        uint256 expirationTimestamp
-    ) internal {
+    function _directVerify(address user, UserType userType, VerificationLevel level, uint256 expirationTimestamp)
+        internal
+    {
         if (userVerifications[user].isVerified) return;
-        
+
         _storeVerification(user, userType, level, expirationTimestamp, 0, "");
         emit UserVerified(user, 0, level, userType, expirationTimestamp);
     }
