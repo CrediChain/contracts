@@ -481,4 +481,49 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     function isNullifierUsed(uint256 nullifierHash) external view returns (bool used) {
         return nullifierHashes[nullifierHash];
     }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                            INTERNAL FUNCTIONS                          ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @notice Internal function to store verification data
+     */
+    function _storeVerification(
+        address user,
+        UserType userType,
+        VerificationLevel level,
+        uint256 expirationTimestamp,
+        uint256 nullifierHash,
+        string memory metadata
+    ) internal {
+        userVerifications[user] = UserVerification({
+            isVerified: true,
+            level: level,
+            userType: userType,
+            verificationTimestamp: block.timestamp,
+            expirationTimestamp: expirationTimestamp,
+            nullifierHash: nullifierHash,
+            metadata: metadata
+        });
+
+        // Add to tracking arrays
+        _addToVerifiedUsers(user);
+        _addToUsersByType(user, userType);
+
+        // Update statistics
+        _updateStatsOnAdd(level);
+    }
+
+    /**
+     * @notice Internal direct verification for admin use
+     */
+    function _directVerify(address user, UserType userType, VerificationLevel level, uint256 expirationTimestamp)
+        internal
+    {
+        if (userVerifications[user].isVerified) return;
+
+        _storeVerification(user, userType, level, expirationTimestamp, 0, "");
+        emit UserVerified(user, 0, level, userType, expirationTimestamp);
+    }
 }
