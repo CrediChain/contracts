@@ -486,6 +486,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                            INTERNAL FUNCTIONS                          ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @notice Internal function to store verification data
+     */
     function _storeVerification(
         address user,
         UserType userType,
