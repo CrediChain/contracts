@@ -486,4 +486,29 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                            INTERNAL FUNCTIONS                          ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    function _storeVerification(
+        address user,
+        UserType userType,
+        VerificationLevel level,
+        uint256 expirationTimestamp,
+        uint256 nullifierHash,
+        string memory metadata
+    ) internal {
+        userVerifications[user] = UserVerification({
+            isVerified: true,
+            level: level,
+            userType: userType,
+            verificationTimestamp: block.timestamp,
+            expirationTimestamp: expirationTimestamp,
+            nullifierHash: nullifierHash,
+            metadata: metadata
+        });
+
+        // Add to tracking arrays
+        _addToVerifiedUsers(user);
+        _addToUsersByType(user, userType);
+
+        // Update statistics
+        _updateStatsOnAdd(level);
+    }
 }
