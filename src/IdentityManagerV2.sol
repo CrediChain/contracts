@@ -515,6 +515,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         _updateStatsOnAdd(level);
     }
 
+    /**
+     * @notice Internal direct verification for admin use
+     */
     function _directVerify(
         address user,
         UserType userType,
