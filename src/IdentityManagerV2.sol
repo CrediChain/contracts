@@ -526,4 +526,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         _storeVerification(user, userType, level, expirationTimestamp, 0, "");
         emit UserVerified(user, 0, level, userType, expirationTimestamp);
     }
+
+        function _addToVerifiedUsers(address user) internal {
+        verifiedUserPositions[user] = verifiedUsers.length;
+        verifiedUsers.push(user);
+    }
 }
