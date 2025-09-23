@@ -481,4 +481,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     function isNullifierUsed(uint256 nullifierHash) external view returns (bool used) {
         return nullifierHashes[nullifierHash];
     }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                            INTERNAL FUNCTIONS                          ///
+    ///////////////////////////////////////////////////////////////////////////////
+
 }
