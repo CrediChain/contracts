@@ -530,7 +530,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     /**
      * @notice Adds user to verified users list
      */
-        function _addToVerifiedUsers(address user) internal {
+    function _addToVerifiedUsers(address user) internal {
         verifiedUserPositions[user] = verifiedUsers.length;
         verifiedUsers.push(user);
     }
