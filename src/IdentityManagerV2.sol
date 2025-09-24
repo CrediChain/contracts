@@ -535,6 +535,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         verifiedUsers.push(user);
     }
 
+    /**
+     * @notice Removes user from verified users list
+     */
     function _removeFromVerifiedUsers(address user) internal {
         uint256 position = verifiedUserPositions[user];
         uint256 lastPosition = verifiedUsers.length - 1;
