@@ -551,4 +551,29 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         verifiedUsers.pop();
         delete verifiedUserPositions[user];
     }
+
+    /**
+     * @notice Adds user to user type list
+     */
+    function _addToUsersByType(address user, UserType userType) internal {
+        userPositions[userType][user] = usersByType[userType].length;
+        usersByType[userType].push(user);
+    }
+
+    /**
+     * @notice Removes user from user type list
+     */
+    function _removeFromUsersByType(address user, UserType userType) internal {
+        uint256 position = userPositions[userType][user];
+        uint256 lastPosition = usersByType[userType].length - 1;
+
+        if (position != lastPosition) {
+            address lastUser = usersByType[userType][lastPosition];
+            usersByType[userType][position] = lastUser;
+            userPositions[userType][lastUser] = position;
+        }
+
+        usersByType[userType].pop();
+        delete userPositions[userType][user];
+    }
 }
