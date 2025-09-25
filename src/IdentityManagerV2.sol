@@ -560,6 +560,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         usersByType[userType].push(user);
     }
 
+    /**
+     * @notice Removes user from user type list
+     */
     function _removeFromUsersByType(address user, UserType userType) internal {
         uint256 position = userPositions[userType][user];
         uint256 lastPosition = usersByType[userType].length - 1;
