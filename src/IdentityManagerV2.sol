@@ -590,9 +590,10 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
             stats.orbVerifications++;
         }
     }
-        /**
+    /**
      * @notice Updates statistics when revoking verification
      */
+
     function _updateStatsOnRevoke(VerificationLevel level) internal {
         if (stats.activeVerifications > 0) {
             stats.activeVerifications--;
