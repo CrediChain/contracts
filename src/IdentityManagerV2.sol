@@ -577,6 +577,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         delete userPositions[userType][user];
     }
 
+    /**
+     * @notice Updates statistics when adding verification
+     */
     function _updateStatsOnAdd(VerificationLevel level) internal {
         stats.totalVerifications++;
         stats.activeVerifications++;
