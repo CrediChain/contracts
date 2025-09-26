@@ -591,7 +591,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         }
     }
 
-        /**
+    /**
      * @notice Updates statistics when revoking verification
      */
     function _updateStatsOnRevoke(VerificationLevel level) internal {
@@ -599,5 +599,4 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
             stats.activeVerifications--;
         }
     }
-
 }
