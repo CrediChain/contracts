@@ -576,4 +576,15 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         usersByType[userType].pop();
         delete userPositions[userType][user];
     }
+
+    function _updateStatsOnAdd(VerificationLevel level) internal {
+        stats.totalVerifications++;
+        stats.activeVerifications++;
+
+        if (level == VerificationLevel.DEVICE) {
+            stats.deviceVerifications++;
+        } else if (level == VerificationLevel.ORB) {
+            stats.orbVerifications++;
+        }
+    }
 }
