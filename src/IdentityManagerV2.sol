@@ -631,7 +631,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
                 stats.expiredVerifications++;
                 
                 delete userVerifications[users[i]];
-                emit VerificationExpired(users[i]);
+                emit VerificationExpire(users[i]);
             }
             unchecked { ++i; }
         }
