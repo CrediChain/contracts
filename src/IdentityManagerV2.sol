@@ -618,6 +618,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
         _unpause();
     }
 
+    /**
+     * @notice Clean up expired verifications (anyone can call)
+     */
     function cleanupExpiredVerifications(address[] calldata users) external {
         for (uint256 i = 0; i < users.length && i < MAX_BATCH_SIZE;) {
             if (isVerificationExpired(users[i])) {
