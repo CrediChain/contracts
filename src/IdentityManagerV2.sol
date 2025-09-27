@@ -599,4 +599,9 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
             stats.activeVerifications--;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                            EMERGENCY FUNCTIONS                         ///
+    ///////////////////////////////////////////////////////////////////////////////
+
 }
