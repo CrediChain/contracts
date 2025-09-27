@@ -604,4 +604,7 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
     ///                            EMERGENCY FUNCTIONS                         ///
     ///////////////////////////////////////////////////////////////////////////////
 
+    function pause() external onlyRole(EMERGENCY_ROLE) {
+        _pause();
+    }
 }
