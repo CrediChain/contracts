@@ -599,4 +599,46 @@ contract IdentityManagerV2 is AccessControl, ReentrancyGuard, Pausable {
             stats.activeVerifications--;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    ///                            EMERGENCY FUNCTIONS                         ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @notice Emergency pause function
+     */
+    function pause() external onlyRole(EMERGENCY_ROLE) {
+        _pause();
+    }
+
+    /**
+     * @notice Emergency unpause function
+     */
+    function unpause() external onlyRole(EMERGENCY_ROLE) {
+        _unpause();
+    }
+
+    /**
+     * @notice Clean up expired verifications (anyone can call)
+     */
+    function cleanupExpiredVerifications(address[] calldata users) external {
+        for (uint256 i = 0; i < users.length && i < MAX_BATCH_SIZE;) {
+            if (isVerificationExpired(users[i])) {
+                UserVerification storage verification = userVerifications[users[i]];
+                UserType userType = verification.userType;
+
+                _removeFromVerifiedUsers(users[i]);
+                _removeFromUsersByType(users[i], userType);
+
+                stats.activeVerifications--;
+                stats.expiredVerifications++;
+
+                delete userVerifications[users[i]];
+                emit VerificationExpire(users[i]);
+            }
+            unchecked {
+                ++i;
+            }
+        }
+    }
 }
