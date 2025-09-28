@@ -21,4 +21,12 @@ interface IIdentityManagerV2 {
         uint256 nullifierHash;
         string metadata;
     }
+
+    struct VerificationStats {
+        uint256 totalVerifications;
+        uint256 deviceVerifications;
+        uint256 orbVerifications;
+        uint256 activeVerifications;
+        uint256 expiredVerifications;
+    }
 }
