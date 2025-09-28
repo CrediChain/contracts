@@ -7,9 +7,18 @@ pragma solidity 0.8.24;
  * @dev This interface defines all external functions for identity verification management
  */
 interface IIdentityManagerV2 {
-        // Enums
-    enum VerificationLevel { NONE, DEVICE, ORB }
-        enum UserType { STUDENT, INSTITUTION, VERIFIER, ADMIN }
+    // Enums
+    enum VerificationLevel {
+        NONE,
+        DEVICE,
+        ORB
+    }
+    enum UserType {
+        STUDENT,
+        INSTITUTION,
+        VERIFIER,
+        ADMIN
+    }
 
     // Structs
     struct UserVerification {
@@ -39,9 +48,5 @@ interface IIdentityManagerV2 {
         uint256 expirationTimestamp
     );
 
-    event UserVerificationRevoked(
-        address indexed user,
-        address indexed revoker,
-        string reason
-    );
+    event UserVerificationRevoked(address indexed user, address indexed revoker, string reason);
 }
