@@ -9,4 +9,6 @@ pragma solidity 0.8.24;
 interface IIdentityManagerV2 {
         // Enums
     enum VerificationLevel { NONE, DEVICE, ORB }
+        enum UserType { STUDENT, INSTITUTION, VERIFIER, ADMIN }
+
 }
