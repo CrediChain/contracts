@@ -6,4 +6,7 @@ pragma solidity 0.8.24;
  * @notice Interface for the enhanced IdentityManagerV2 contract
  * @dev This interface defines all external functions for identity verification management
  */
-interface IIdentityManagerV2 {}
+interface IIdentityManagerV2 {
+        // Enums
+    enum VerificationLevel { NONE, DEVICE, ORB }
+}
