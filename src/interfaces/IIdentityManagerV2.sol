@@ -38,4 +38,10 @@ interface IIdentityManagerV2 {
         UserType userType,
         uint256 expirationTimestamp
     );
+
+    event UserVerificationRevoked(
+        address indexed user,
+        address indexed revoker,
+        string reason
+    );
 }
