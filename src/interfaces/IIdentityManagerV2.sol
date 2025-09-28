@@ -29,4 +29,13 @@ interface IIdentityManagerV2 {
         uint256 activeVerifications;
         uint256 expiredVerifications;
     }
+
+    // Events
+    event UserVerified(
+        address indexed user,
+        uint256 indexed nullifierHash,
+        VerificationLevel level,
+        UserType userType,
+        uint256 expirationTimestamp
+    );
 }
