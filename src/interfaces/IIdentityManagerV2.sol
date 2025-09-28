@@ -11,4 +11,14 @@ interface IIdentityManagerV2 {
     enum VerificationLevel { NONE, DEVICE, ORB }
         enum UserType { STUDENT, INSTITUTION, VERIFIER, ADMIN }
 
+    // Structs
+    struct UserVerification {
+        bool isVerified;
+        VerificationLevel level;
+        UserType userType;
+        uint256 verificationTimestamp;
+        uint256 expirationTimestamp;
+        uint256 nullifierHash;
+        string metadata;
+    }
 }
