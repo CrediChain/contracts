@@ -53,4 +53,14 @@ interface IIdentityManagerV2 {
     event VerificationRenewed(address indexed user, uint256 newExpirationTimestamp);
     event BatchVerificationCompleted(address indexed admin, uint256 count, UserType userType);
     event VerificationExpired(address indexed user);
+
+        // Core verification functions
+    function verifyAndExecute(
+        address signal,
+        uint256 root,
+        uint256 nullifierHash,
+        uint256[8] calldata proof,
+        UserType userType,
+        uint256 expirationTimestamp
+    ) external;
 }
