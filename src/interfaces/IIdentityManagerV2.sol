@@ -52,4 +52,5 @@ interface IIdentityManagerV2 {
     event UserTypeUpdated(address indexed user, UserType oldType, UserType newType);
     event VerificationRenewed(address indexed user, uint256 newExpirationTimestamp);
     event BatchVerificationCompleted(address indexed admin, uint256 count, UserType userType);
+    event VerificationExpired(address indexed user);
 }
