@@ -54,7 +54,7 @@ interface IIdentityManagerV2 {
     event BatchVerificationCompleted(address indexed admin, uint256 count, UserType userType);
     event VerificationExpired(address indexed user);
 
-        // Core verification functions
+    // Core verification functions
     function verifyAndExecute(
         address signal,
         uint256 root,
