@@ -63,4 +63,12 @@ interface IIdentityManagerV2 {
         UserType userType,
         uint256 expirationTimestamp
     ) external;
+
+    function batchVerifyUsers(
+        address[] calldata users,
+        UserType[] calldata userTypes,
+        VerificationLevel[] calldata levels,
+        uint256[] calldata expirationTimestamps,
+        string[] calldata metadataHashes
+    ) external;
 }
