@@ -72,13 +72,8 @@ interface IIdentityManagerV2 {
         string[] calldata metadataHashes
     ) external;
 
-    function emergencyVerify(
-        address user,
-        UserType userType,
-        VerificationLevel level
-    ) external;
+    function emergencyVerify(address user, UserType userType, VerificationLevel level) external;
 
     // Management functions
     function revokeVerification(address user, string calldata reason) external;
-    
 }
