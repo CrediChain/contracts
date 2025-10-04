@@ -77,4 +77,8 @@ interface IIdentityManagerV2 {
         UserType userType,
         VerificationLevel level
     ) external;
+
+    // Management functions
+    function revokeVerification(address user, string calldata reason) external;
+    
 }
