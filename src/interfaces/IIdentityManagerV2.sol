@@ -71,4 +71,11 @@ interface IIdentityManagerV2 {
         uint256[] calldata expirationTimestamps,
         string[] calldata metadataHashes
     ) external;
+
+    function emergencyVerify(address user, UserType userType, VerificationLevel level) external;
+
+    // Management functions
+    function revokeVerification(address user, string calldata reason) external;
+    function updateUserType(address user, UserType newUserType) external;
+    function renewVerification(address user, uint256 newExpirationTimestamp) external;
 }
