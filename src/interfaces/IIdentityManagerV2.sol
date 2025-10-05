@@ -77,6 +77,5 @@ interface IIdentityManagerV2 {
     // Management functions
     function revokeVerification(address user, string calldata reason) external;
     function updateUserType(address user, UserType newUserType) external;
-
-
+    function renewVerification(address user, uint256 newExpirationTimestamp) external;
 }
