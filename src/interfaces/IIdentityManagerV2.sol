@@ -83,4 +83,6 @@ interface IIdentityManagerV2 {
     function getIsVerified(address user) external view returns (bool);
     function isUserVerified(address user) external view returns (bool);
     function isVerificationExpired(address user) external view returns (bool);
+    function getUserVerification(address user) external view returns (UserVerification memory);
+
 }
